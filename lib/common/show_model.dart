@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/medicine_type.dart';
 import 'package:medication/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
@@ -84,7 +85,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
     return Container(
       key: _scaffoldkey,
       padding: const EdgeInsets.all(30),
-      height: MediaQuery.of(context).size.height * 0.80,
+      height: MediaQuery.of(context).size.height * 0.85,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -175,9 +176,10 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
             ),
           ),
           const PanelTitle(title: 'Interval Selection', isRequired: true),
+          const Divider(),
           const IntervalSelection(),
           const PanelTitle(title: 'Starting Time', isRequired: true),
-          // const SelectTime(),
+          const SelectTime(),
         ],
       ),
     );
@@ -275,15 +277,123 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(top: 1),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             'Remind me every',
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: Colors.black,
+                ),
           ),
+          DropdownButton(
+              iconEnabledColor: Colors.blue,
+              dropdownColor: Colors.white,
+              // itemHeight: 0.80,
+              hint: _selected == 0
+                  ? Text(
+                      'Select Interval',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Colors.black),
+                    )
+                  : null,
+              elevation: 4,
+              value: _selected == 0 ? null : _selected,
+              items: _intervals.map(
+                (int value) {
+                  return DropdownMenuItem<int>(
+                    value: value,
+                    child: Text(
+                      value.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
+                  );
+                },
+              ).toList(),
+              onChanged: (newVal) {
+                setState(() {
+                  _selected = newVal!;
+                });
+              }),
+          Text(
+            _selected == 1 ? "Hour" : "Hours",
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  color: Colors.black,
+                ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class SelectTime extends StatefulWidget {
+  const SelectTime({Key? key}) : super(key: key);
+
+  @override
+  State<SelectTime> createState() => _SelectTimeState();
+}
+
+class _SelectTimeState extends State<SelectTime> {
+  TimeOfDay _time = const TimeOfDay(hour: 0, minute: 00);
+  bool _clicked = false;
+
+  Future<TimeOfDay> _selectTime() async {
+    final TimeOfDay? picked =
+        await showTimePicker(context: context, initialTime: _time);
+
+    if (picked != null && picked != _time) {
+      setState(() {
+        _time = picked;
+        _clicked = true;
+      });
+    }
+    return picked!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade500,
+                offset: const Offset(4.0, 4.0),
+                blurRadius: 15.0,
+                spreadRadius: 1.0,
+              ),
+            ],
+          ),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.white,
+              shape: const StadiumBorder(),
+            ),
+            onPressed: () {
+              _selectTime();
+            },
+            child: Center(
+              child: Text(
+                _clicked == false
+                    ? "Select Time"
+                    : "${convertTime(_time.hour.toString())} : ${convertTime(_time.minute.toString())}",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Colors.black,
+                    ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
