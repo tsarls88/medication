@@ -275,7 +275,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.only(top: 1),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
