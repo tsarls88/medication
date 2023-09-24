@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/medicine_type.dart';
-import 'package:medication/pages/new_entry/new_entry_bloc.dart';
-import 'package:provider/provider.dart';
+// import 'package:medication/pages/new_entry/new_entry_bloc.dart';
+// import 'package:provider/provider.dart';
 
 class AddNewTaskModel extends StatefulWidget {
   const AddNewTaskModel({Key? key}) : super(key: key);
@@ -177,6 +178,8 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
           ),
           const PanelTitle(title: 'Interval Selection', isRequired: true),
           const Divider(),
+          const PanelTitle(title: 'Select Date', isRequired: false),
+          const SelectDate(),
           const IntervalSelection(),
           const PanelTitle(title: 'Starting Time', isRequired: true),
           const SelectTime(),
@@ -394,6 +397,61 @@ class _SelectTimeState extends State<SelectTime> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SelectDate extends StatefulWidget {
+  const SelectDate({Key? key}) : super(key: key);
+
+  @override
+  State<SelectDate> createState() => _SelectDateState();
+}
+
+class _SelectDateState extends State<SelectDate> {
+  final TextEditingController _dateController = TextEditingController();
+
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      setState(() {
+        _dateController.text = DateFormat.yMd().format(picked);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: TextField(
+        decoration: const InputDecoration(
+          labelText: 'DATE',
+          filled: true,
+          prefixIcon: Icon(Icons.calendar_today),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+          ),
+        ),
+        readOnly: true,
+        controller: _dateController,
+        onTap: _selectDate,
       ),
     );
   }
