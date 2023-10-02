@@ -90,9 +90,9 @@ class _UserMediState extends State<UserMedi> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Today\'s Task',
+                        'Today\'s Medicine List',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
