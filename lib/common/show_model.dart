@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/medicine_type.dart';
 import 'package:medication/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:gap/gap.dart';
 
 class AddNewTaskModel extends StatefulWidget {
   const AddNewTaskModel({Key? key}) : super(key: key);
@@ -96,41 +98,70 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Add New Medicine',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+            const SizedBox(
+              width: double.infinity,
+              child: Text(
+                'Add New Medicine',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
-            const Divider(),
+            Divider(
+              thickness: 1.2,
+              color: Colors.grey.shade200,
+            ),
+            const Gap(12),
             const PanelTitle(
               title: 'Medicine Name',
               isRequired: false,
             ),
-            TextFormField(
-              maxLength: 12,
-              controller: nameController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10),
               ),
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+              child: TextFormField(
+                controller: nameController,
+                textCapitalization: TextCapitalization.words,
+                decoration: const InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  hintText: 'Add Medicine Name',
+                ),
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+              ),
             ),
+            const Gap(7),
             const PanelTitle(
               title: 'Dosage in Mg',
               isRequired: true,
             ),
-            TextFormField(
-              maxLength: 12,
-              controller: dosageController,
-              textCapitalization: TextCapitalization.words,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(10),
               ),
-              style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+              child: TextFormField(
+                controller: nameController,
+                textCapitalization: TextCapitalization.words,
+                decoration: const InputDecoration(
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  hintText: 'Add Dosage',
+                ),
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+              ),
             ),
             const SizedBox(
               height: 1,
             ),
+            const Gap(7),
             const PanelTitle(title: 'Medicine Type', isRequired: true),
             const Divider(),
             Padding(
@@ -177,14 +208,29 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 // stream: null,
               ),
             ),
+            const Gap(9),
             const PanelTitle(title: 'Interval Selection', isRequired: true),
             const IntervalSelection(),
             // const SelectDate(),
-            const PanelTitle(title: 'Starting Time', isRequired: true),
-            const SelectTime(),
-            const SizedBox(
-              height: 15,
+            const Gap(7),
+            const PanelTitle(title: 'Select Date and Time', isRequired: true),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SelectTime(
+                  titleText: 'Time',
+                  valueText: 'hh/mm',
+                  iconSection: CupertinoIcons.clock,
+                ),
+                Gap(22),
+                SelectTime(
+                  titleText: 'Time',
+                  valueText: 'hh/mm',
+                  iconSection: CupertinoIcons.clock,
+                ),
+              ],
             ),
+            const Gap(15),
             Padding(
               padding: const EdgeInsets.only(
                 left: 50,
@@ -277,7 +323,7 @@ class MedicineTypeColumn extends StatelessWidget {
                   iconValue,
                   height: 50,
                   // ignore: deprecated_member_use
-                  color: isSelected ? Colors.blueAccent : Colors.greenAccent,
+                  color: isSelected ? Colors.red : Colors.greenAccent,
                 ),
               ),
             ),
@@ -288,7 +334,7 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 55,
               height: 40,
               decoration: BoxDecoration(
-                color: isSelected ? Colors.blue : Colors.transparent,
+                color: isSelected ? Colors.red : Colors.transparent,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Center(
@@ -377,15 +423,26 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 }
 
 class SelectTime extends StatefulWidget {
-  const SelectTime({Key? key}) : super(key: key);
+  const SelectTime({
+    Key? key,
+    required this.titleText,
+    required this.valueText,
+    required this.iconSection,
+  }) : super(key: key);
+
+  final String titleText;
+  final String valueText;
+  final IconData iconSection;
 
   @override
-  State<SelectTime> createState() => _SelectTimeState();
+  // ignore: library_private_types_in_public_api
+  _SelectTimeState createState() => _SelectTimeState();
 }
 
 class _SelectTimeState extends State<SelectTime> {
-  TimeOfDay _time = const TimeOfDay(hour: 0, minute: 00);
+  TimeOfDay _time = const TimeOfDay(hour: 0, minute: 0);
   bool _clicked = false;
+  late String _selectedTimeFormat;
 
   Future<TimeOfDay> _selectTime() async {
     final TimeOfDay? picked =
@@ -395,6 +452,7 @@ class _SelectTimeState extends State<SelectTime> {
       setState(() {
         _time = picked;
         _clicked = true;
+        _selectedTimeFormat = picked.period == DayPeriod.am ? 'AM' : 'PM';
       });
     }
     return picked!;
@@ -402,41 +460,41 @@ class _SelectTimeState extends State<SelectTime> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 45,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade500,
-                offset: const Offset(4.0, 4.0),
-                blurRadius: 15.0,
-                spreadRadius: 1.0,
-              ),
-            ],
-          ),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: const StadiumBorder(),
-            ),
-            onPressed: () {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 5),
+          GestureDetector(
+            onTap: () {
               _selectTime();
             },
-            child: Center(
-              child: Text(
-                _clicked == false
-                    ? "Select Time"
-                    : "${convertTime(_time.hour.toString())} : ${convertTime(_time.minute.toString())}",
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: Colors.black,
-                    ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(widget.iconSection),
+                  const SizedBox(width: 10),
+                  Text(
+                    _clicked == false
+                        ? "Select Time"
+                        : convertTime(_time.hour, _time.minute),
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
