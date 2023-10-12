@@ -59,17 +59,6 @@ class _UserMediState extends State<UserMedi> {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UserCalendar(),
-                      ),
-                    );
-                  },
-                  icon: const Icon(CupertinoIcons.calendar),
-                ),
-                IconButton(
                   onPressed: () {},
                   icon: const Icon(CupertinoIcons.bell),
                 ),

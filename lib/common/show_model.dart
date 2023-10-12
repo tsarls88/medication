@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/medicine_type.dart';
@@ -148,7 +149,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextFormField(
-                controller: nameController,
+                controller: dosageController,
                 textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(
                   enabledBorder: InputBorder.none,
@@ -208,11 +209,11 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 // stream: null,
               ),
             ),
-            const Gap(9),
+            const Gap(4),
             const PanelTitle(title: 'Interval Selection', isRequired: true),
             const IntervalSelection(),
             // const SelectDate(),
-            const Gap(7),
+            const Gap(4),
             const PanelTitle(title: 'Select Date and Time', isRequired: true),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -222,53 +223,81 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                   valueText: 'hh/mm',
                   iconSection: CupertinoIcons.clock,
                 ),
-                Gap(22),
-                SelectTime(
+                Gap(15),
+                SelectDate(
                   titleText: 'Time',
                   valueText: 'hh/mm',
-                  iconSection: CupertinoIcons.clock,
+                  iconSection: CupertinoIcons.calendar,
                 ),
               ],
             ),
-            const Gap(15),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 50,
-                right: 50,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade500,
-                      offset: const Offset(4.0, 4.0),
-                      blurRadius: 15.0,
-                      spreadRadius: 1.0,
-                    ),
-                  ],
-                ),
-                child: SizedBox(
-                  width: 350,
-                  height: 35,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.blueAccent.shade200,
-                      shape: const StadiumBorder(),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Confirm',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(color: Colors.black),
+            const Gap(11),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.blue.shade800,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      side: BorderSide(
+                        color: Colors.blue.shade800,
                       ),
                     ),
+                    child: const Text('Cancel'),
                     onPressed: () {},
                   ),
                 ),
-              ),
+                const Gap(11),
+                Expanded(
+                  child: ElevatedButton(
+                    child: const Text('Confirm'),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
             ),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     left: 50,
+            //     right: 50,
+            //   ),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       boxShadow: [
+            //         BoxShadow(
+            //           color: Colors.grey.shade500,
+            //           offset: const Offset(4.0, 4.0),
+            //           blurRadius: 15.0,
+            //           spreadRadius: 1.0,
+            //         ),
+            //       ],
+            //     ),
+            //     child: SizedBox(
+            //       width: 350,
+            //       height: 35,
+            //       child: TextButton(
+            //         style: TextButton.styleFrom(
+            //           backgroundColor: Colors.blueAccent.shade200,
+            //           shape: const StadiumBorder(),
+            //         ),
+            //         child: Center(
+            //           child: Text(
+            //             'Confirm',
+            //             style: Theme.of(context)
+            //                 .textTheme
+            //                 .titleMedium!
+            //                 .copyWith(color: Colors.black),
+            //           ),
+            //         ),
+            //         onPressed: () {},
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -442,6 +471,7 @@ class SelectTime extends StatefulWidget {
 class _SelectTimeState extends State<SelectTime> {
   TimeOfDay _time = const TimeOfDay(hour: 0, minute: 0);
   bool _clicked = false;
+  // ignore: unused_field
   late String _selectedTimeFormat;
 
   Future<TimeOfDay> _selectTime() async {
@@ -486,7 +516,7 @@ class _SelectTimeState extends State<SelectTime> {
                     _clicked == false
                         ? "Select Time"
                         : convertTime(_time.hour, _time.minute),
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           color: Colors.black,
                         ),
                   ),
@@ -500,57 +530,78 @@ class _SelectTimeState extends State<SelectTime> {
   }
 }
 
-// class SelectDate extends StatefulWidget {
-//   const SelectDate({Key? key}) : super(key: key);
+class SelectDate extends StatefulWidget {
+  const SelectDate(
+      {Key? key,
+      required String titleText,
+      required String valueText,
+      required IconData iconSection})
+      : super(key: key);
 
-//   @override
-//   State<SelectDate> createState() => _SelectDateState();
-// }
+  @override
+  State<SelectDate> createState() => _SelectDateState();
+}
 
-// class _SelectDateState extends State<SelectDate> {
-//   final TextEditingController _dateController = TextEditingController();
+class _SelectDateState extends State<SelectDate> {
+  final TextEditingController _dateController = TextEditingController();
 
-//   @override
-//   void dispose() {
-//     _dateController.dispose();
-//     super.dispose();
-//   }
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
 
-//   Future<void> _selectDate() async {
-//     DateTime? picked = await showDatePicker(
-//       context: context,
-//       initialDate: DateTime.now(),
-//       firstDate: DateTime(2000),
-//       lastDate: DateTime(2100),
-//     );
+  Future<void> _selectDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
 
-//     if (picked != null) {
-//       setState(() {
-//         _dateController.text = DateFormat.yMd().format(picked);
-//       });
-//     }
-//   }
+    if (picked != null) {
+      setState(() {
+        _dateController.text = DateFormat.yMd().format(picked);
+      });
+    }
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 3),
-//       child: TextField(
-//         decoration: const InputDecoration(
-//           labelText: 'DATE',
-//           filled: true,
-//           prefixIcon: Icon(Icons.calendar_today),
-//           // enabledBorder: OutlineInputBorder(
-//           //   borderSide: BorderSide.none,
-//           // ),
-//           // focusedBorder: OutlineInputBorder(
-//           //   borderSide: BorderSide(color: Colors.blue),
-//           // ),
-//         ),
-//         readOnly: true,
-//         controller: _dateController,
-//         onTap: _selectDate,
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 5),
+          GestureDetector(
+            onTap: _selectDate, // Fix: Remove extra onTap declaration
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.calendar_today),
+                  const SizedBox(width: 10),
+                  Text(
+                    _dateController.text.isNotEmpty
+                        ? _dateController.text
+                        : "Select Date",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
