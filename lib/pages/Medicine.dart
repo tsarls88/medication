@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:medication/common/medicine_type.dart';
 import 'package:medication/common/show_model.dart';
+import 'package:medication/medicine_details/medicine_details.dart';
 import 'package:sizer/sizer.dart';
 import 'Insights.dart';
 import 'Calendar.dart';
@@ -159,71 +160,84 @@ class BottomContainer extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
-        itemCount: 2,
+        itemCount: 4,
         itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.all(15),
-            margin: const EdgeInsets.all(3),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                SvgPicture.asset(
-                  'assets/bottle.svg',
-                  height: 7.h,
-                  // ignore: deprecated_member_use
-                  color: Colors.greenAccent,
+          return InkWell(
+            highlightColor: Colors.white,
+            splashColor: Colors.grey,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MedicineDetails(),
                 ),
-                const Spacer(),
-                Text(
-                  'Calpol',
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-                Text(
-                  '8mg',
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-                const SizedBox(
-                  height: 2,
-                ),
-                Text(
-                  'Every 8 Hours',
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-                Text(
-                  '2:16PM',
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-                Text(
-                  '10/16/23',
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.black,
-                      ),
-                ),
-              ],
+              );
+            },
+            child: Container(
+              padding:
+                  EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
+              margin: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  SvgPicture.asset(
+                    'assets/bottle.svg',
+                    height: 7.h,
+                    // ignore: deprecated_member_use
+                    color: Colors.greenAccent,
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Calpol',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  Text(
+                    '8mg',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    'Every 8 Hours',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  Text(
+                    '2:16PM',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  Text(
+                    '10/16/23',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                ],
+              ),
             ),
           );
         },
