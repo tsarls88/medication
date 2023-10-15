@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
+import 'package:medication/common/medicine_type.dart';
 import 'package:medication/common/show_model.dart';
+import 'package:sizer/sizer.dart';
 import 'Insights.dart';
 import 'Calendar.dart';
 import 'Settings.dart';
@@ -115,6 +119,8 @@ class _UserMediState extends State<UserMedi> {
                   ),
                 ],
               ),
+              const Gap(7),
+              const BottomContainer(),
             ],
           ),
         ),
@@ -132,6 +138,95 @@ class _UserMediState extends State<UserMedi> {
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), label: 'Settings'),
         ],
+      ),
+    );
+  }
+}
+
+class BottomContainer extends StatelessWidget {
+  const BottomContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 500.h,
+      width: 660.w,
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      child: GridView.builder(
+        padding: const EdgeInsets.only(top: 3),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: 2,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: const EdgeInsets.all(15),
+            margin: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                SvgPicture.asset(
+                  'assets/bottle.svg',
+                  height: 7.h,
+                  // ignore: deprecated_member_use
+                  color: Colors.greenAccent,
+                ),
+                const Spacer(),
+                Text(
+                  'Calpol',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                Text(
+                  '8mg',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  'Every 8 Hours',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                Text(
+                  '2:16PM',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                Text(
+                  '10/16/23',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

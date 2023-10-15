@@ -56,6 +56,9 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
   late NewEntryBloc _newEntryBloc;
   late GlobalKey<ScaffoldState> _scaffoldkey;
 
+  String? medicineName;
+  String? dosage;
+
   @override
   void dispose() {
     super.dispose();
@@ -135,6 +138,11 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                   hintText: 'Add Medicine Name',
                 ),
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+                onChanged: (value) {
+                  setState(() {
+                    medicineName = value;
+                  });
+                },
               ),
             ),
             const Gap(7),
@@ -157,6 +165,11 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                   hintText: 'Add Dosage',
                 ),
                 style: Theme.of(context).textTheme.titleSmall!.copyWith(),
+                onChanged: (value) {
+                  setState(() {
+                    dosage = value;
+                  });
+                },
               ),
             ),
             const SizedBox(
@@ -225,8 +238,8 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 ),
                 Gap(15),
                 SelectDate(
-                  titleText: 'Time',
-                  valueText: 'hh/mm',
+                  titleText: 'mm',
+                  valueText: 'dd',
                   iconSection: CupertinoIcons.calendar,
                 ),
               ],
@@ -248,7 +261,14 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                       ),
                     ),
                     child: const Text('Cancel'),
-                    onPressed: () {},
+                    onPressed: () {
+                      String medicineName = nameController.text;
+                      String dosage = dosageController.text;
+
+                      if (medicineName.isEmpty || dosage.isEmpty) {
+                        return;
+                      }
+                    },
                   ),
                 ),
                 const Gap(11),
@@ -260,44 +280,6 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 ),
               ],
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     left: 50,
-            //     right: 50,
-            //   ),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       boxShadow: [
-            //         BoxShadow(
-            //           color: Colors.grey.shade500,
-            //           offset: const Offset(4.0, 4.0),
-            //           blurRadius: 15.0,
-            //           spreadRadius: 1.0,
-            //         ),
-            //       ],
-            //     ),
-            //     child: SizedBox(
-            //       width: 350,
-            //       height: 35,
-            //       child: TextButton(
-            //         style: TextButton.styleFrom(
-            //           backgroundColor: Colors.blueAccent.shade200,
-            //           shape: const StadiumBorder(),
-            //         ),
-            //         child: Center(
-            //           child: Text(
-            //             'Confirm',
-            //             style: Theme.of(context)
-            //                 .textTheme
-            //                 .titleMedium!
-            //                 .copyWith(color: Colors.black),
-            //           ),
-            //         ),
-            //         onPressed: () {},
-            //       ),
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),
