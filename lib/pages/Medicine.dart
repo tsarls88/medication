@@ -86,14 +86,14 @@ class _UserMediState extends State<UserMedi> {
                       const Text(
                         'Today\'s Medicine List',
                         style: TextStyle(
-                            fontSize: 15,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
                       Text(
                         currentDate,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 13,
                           color: Colors.black,
                         ),
                       ),
@@ -120,7 +120,8 @@ class _UserMediState extends State<UserMedi> {
                   ),
                 ],
               ),
-              const Gap(7),
+              const Divider(),
+              const Gap(5),
               const BottomContainer(),
             ],
           ),
