@@ -154,7 +154,7 @@ class BottomContainer extends StatelessWidget {
     return Container(
       height: 500.h,
       width: 660.w,
-      margin: const EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 3),
       child: GridView.builder(
         padding: const EdgeInsets.only(top: 3),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -175,8 +175,8 @@ class BottomContainer extends StatelessWidget {
             },
             child: Container(
               padding:
-                  EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
-              margin: const EdgeInsets.all(3),
+                  EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
+              margin: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -185,10 +185,9 @@ class BottomContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
                   SvgPicture.asset(
                     'assets/bottle.svg',
-                    height: 7.h,
+                    height: 6.h,
                     // ignore: deprecated_member_use
                     color: Colors.greenAccent,
                   ),
@@ -197,7 +196,7 @@ class BottomContainer extends StatelessWidget {
                     'Calpol',
                     overflow: TextOverflow.fade,
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: Colors.black,
                         ),
                   ),
@@ -205,7 +204,7 @@ class BottomContainer extends StatelessWidget {
                     '8mg',
                     overflow: TextOverflow.fade,
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: Colors.black,
                         ),
                   ),
