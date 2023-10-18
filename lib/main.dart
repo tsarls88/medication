@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medication/global_bloc.dart';
 import 'package:medication/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -16,18 +17,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  NewEntryBloc? newEntryBloc;
+  GlobalBloc? globalBloc;
+  // NewEntryBloc? newEntryBloc;
 
   @override
   void initState() {
-    newEntryBloc = NewEntryBloc();
+    globalBloc = GlobalBloc();
+    // newEntryBloc = NewEntryBloc();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Provider<NewEntryBloc>.value(
-      value: newEntryBloc!,
+    return Provider<GlobalBloc>.value(
+      value: globalBloc!,
+      // value: newEntryBloc!,
       child: Sizer(
         builder: (context, orientation, deviceType) {
           return MaterialApp(
@@ -40,14 +44,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     debugShowCheckedModeBanner: false,
-  //     home: const HomePage(),
-  //     theme: ThemeData(primarySwatch: Colors.lightBlue),
-  //   );
-  // }
-

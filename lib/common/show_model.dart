@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/interval_selection_widget.dart';
 import 'package:medication/common/medicine_type.dart';
+import 'package:medication/global_bloc.dart';
 import 'package:medication/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:gap/gap.dart';
@@ -91,7 +92,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
 
   @override
   Widget build(BuildContext context) {
-    // final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Container(
       key: _scaffoldkey,
       padding: const EdgeInsets.all(30),

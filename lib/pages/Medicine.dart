@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:medication/common/medicine_type.dart';
+// import 'package:medication/common/medicine_type.dart';
 import 'package:medication/common/show_model.dart';
 import 'package:medication/medicine_details/medicine_details.dart';
 import 'package:sizer/sizer.dart';
@@ -53,7 +53,7 @@ class _UserMediState extends State<UserMedi> {
     String currentDate = DateFormat('EEEE, d MMMM').format(now);
 
     var $ScreenHeight = MediaQuery.of(context).size.height / 100;
-    var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+    // var $ScreenWidth = MediaQuery.of(context).size.width / 100;
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -79,7 +79,7 @@ class _UserMediState extends State<UserMedi> {
         child: Column(
           children: [
             SizedBox(
-              height: 1.h,
+              height: 0.5.h,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 11),
