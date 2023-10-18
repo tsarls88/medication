@@ -52,6 +52,9 @@ class _UserMediState extends State<UserMedi> {
     DateTime now = DateTime.now();
     String currentDate = DateFormat('EEEE, d MMMM').format(now);
 
+    var $ScreenHeight = MediaQuery.of(context).size.height / 100;
+    var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
@@ -73,27 +76,30 @@ class _UserMediState extends State<UserMedi> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 1.h,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 11),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Today\'s Medicine List',
                         style: TextStyle(
-                            fontSize: 12,
+                            fontSize: $ScreenHeight * 1.8,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
                       ),
                       Text(
                         currentDate,
-                        style: const TextStyle(
-                          fontSize: 13,
+                        style: TextStyle(
+                          fontSize: $ScreenHeight * 1.8,
                           color: Colors.black,
                         ),
                       ),
@@ -116,15 +122,21 @@ class _UserMediState extends State<UserMedi> {
                       context: context,
                       builder: (context) => const AddNewTaskModel(),
                     ),
-                    child: const Text('+ Add Medicine'),
+                    child: Text(
+                      '+ Add Medicine',
+                      style: TextStyle(
+                        fontSize: $ScreenHeight * 1.8,
+                      ),
+                    ),
                   ),
                 ],
               ),
-              const Divider(),
-              const Gap(5),
-              const BottomContainer(),
-            ],
-          ),
+            ),
+            Divider(
+              thickness: $ScreenHeight * 0.1,
+            ),
+            const BottomContainer(),
+          ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -152,95 +164,102 @@ class BottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var $ScreenHeight = MediaQuery.of(context).size.height / 100;
+    var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+
     return Container(
-      height: 500.h,
-      width: 660.w,
+      height: $ScreenHeight * 100,
+      width: $ScreenWidth * 100,
       margin: const EdgeInsets.symmetric(vertical: 3),
-      child: GridView.builder(
-        padding: const EdgeInsets.only(top: 3),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return InkWell(
-            highlightColor: Colors.white,
-            splashColor: Colors.grey,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MedicineDetails(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: GridView.builder(
+          padding: const EdgeInsets.only(top: 1),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            return InkWell(
+              highlightColor: Colors.white,
+              splashColor: Colors.grey,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MedicineDetails(),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.only(
+                    left: 2.w, right: 2.w, top: 0.h, bottom: 0.h),
+                margin: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              );
-            },
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: 2.w, right: 2.w, top: 1.h, bottom: 1.h),
-              margin: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SvgPicture.asset(
+                        'assets/bottle.svg',
+                        height: 8.h,
+                        // ignore: deprecated_member_use
+                        color: Colors.greenAccent,
+                      ),
+                    ),
+                    Text(
+                      'Calpol',
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      '8mg',
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
+                    const Gap(2),
+                    Text(
+                      'Every 8 Hours',
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
+                    Text(
+                      '2:16PM',
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
+                    Text(
+                      '10/16/23',
+                      overflow: TextOverflow.fade,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Colors.black,
+                          ),
+                    ),
+                  ],
+                ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/bottle.svg',
-                    height: 6.h,
-                    // ignore: deprecated_member_use
-                    color: Colors.greenAccent,
-                  ),
-                  const Spacer(),
-                  Text(
-                    'Calpol',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  Text(
-                    '8mg',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    'Every 8 Hours',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  Text(
-                    '2:16PM',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  Text(
-                    '10/16/23',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
