@@ -265,12 +265,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                     ),
                     child: const Text('Cancel'),
                     onPressed: () {
-                      String medicineName = nameController.text;
-                      String dosage = dosageController.text;
-
-                      if (medicineName.isEmpty || dosage.isEmpty) {
-                        return;
-                      }
+                      Navigator.of(context).pop();
                     },
                   ),
                 ),
@@ -321,9 +316,9 @@ class MedicineTypeColumn extends StatelessWidget {
                 color: isSelected ? Colors.white : Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.shade500,
+                    color: Colors.grey.shade300,
                     offset: const Offset(4.0, 4.0),
-                    blurRadius: 15.0,
+                    blurRadius: 11.0,
                     spreadRadius: 1.0,
                   )
                 ]),
