@@ -1,5 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medication/pages/new_entry/new_entry_bloc.dart';
+import 'package:provider/provider.dart';
 
 class IntervalSelection extends StatefulWidget {
   const IntervalSelection({Key? key}) : super(key: key);
@@ -14,6 +16,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
 
   @override
   Widget build(BuildContext context) {
+    final NewEntryBloc newEntryBloc = Provider.of<NewEntryBloc>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: Row(
@@ -56,6 +59,7 @@ class _IntervalSelectionState extends State<IntervalSelection> {
               onChanged: (newVal) {
                 setState(() {
                   _selected = newVal!;
+                  newEntryBloc.updateInterval(newVal);
                 });
               }),
           Text(

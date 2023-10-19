@@ -299,7 +299,8 @@ class MedicinceCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  medicine.medicineName!,
+                  'Biogesic',
+                  // medicine.medicineName!,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
