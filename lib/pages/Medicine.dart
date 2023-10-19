@@ -299,8 +299,8 @@ class MedicinceCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Biogesic',
-                  // medicine.medicineName!,
+                  // 'Biogesic',
+                  medicine.medicineName!,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -318,7 +318,9 @@ class MedicinceCard extends StatelessWidget {
                 ),
                 const Gap(2),
                 Text(
-                  'Every 8 Hours',
+                  medicine.interval == 1
+                      ? "Every ${medicine.interval} Hour"
+                      : "Every ${medicine.interval} Hour",
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
