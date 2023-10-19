@@ -1,18 +1,24 @@
+// import 'dart:html';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:medication/common/Medicine_main.dart';
+import 'package:medication/common/errors.dart';
 // import 'package:intl/intl.dart';
 // import 'package:intl/intl.dart';
 // import 'package:medication/common/convert_time.dart';
 import 'package:medication/common/interval_selection_widget.dart';
 import 'package:medication/common/medicine_type.dart';
 import 'package:medication/global_bloc.dart';
+import 'package:medication/pages/Medicine.dart';
 import 'package:medication/pages/new_entry/new_entry_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:gap/gap.dart';
 import 'package:medication/common/select_time_widget.dart';
 import 'package:medication/common/select_date_widget.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AddNewTaskModel extends StatefulWidget {
   const AddNewTaskModel({Key? key}) : super(key: key);
@@ -79,6 +85,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
 
     _newEntryBloc = NewEntryBloc();
     _scaffoldkey = GlobalKey<ScaffoldState>();
+    // initializeErrorListen();
   }
 
   @override
@@ -93,6 +100,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
   @override
   Widget build(BuildContext context) {
     final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
+    initializeErrorListen();
     return Container(
       key: _scaffoldkey,
       padding: const EdgeInsets.all(30),
@@ -274,7 +282,76 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                 Expanded(
                   child: ElevatedButton(
                     child: const Text('Confirm'),
-                    onPressed: () {},
+                    onPressed: () {
+                      // String? medicineName;
+                      // int? dosage;
+
+                      // if (nameController.text == "") {
+                      //   _newEntryBloc.submitError(EntryError.nameNull);
+                      //   return;
+                      // }
+                      // if (nameController.text == "") {
+                      //   medicineName = nameController.text;
+                      // }
+
+                      // if (dosageController.text == "") {
+                      //   dosage == 0;
+                      // }
+                      // if (dosageController.text != "") {
+                      //   dosage = int.parse(dosageController.text);
+                      // }
+                      // for (var medicine in globalBloc.medcineList$!.value) {
+                      //   if (medicineName == medicine.medicineName) {
+                      //     _newEntryBloc.submitError(EntryError.nameDuplicate);
+                      //     return;
+                      //   }
+                      // }
+                      // if (_newEntryBloc.selectedIntervals!.value == 0) {
+                      //   _newEntryBloc.submitError(EntryError.interval);
+                      //   return;
+                      // }
+                      // if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
+                      //   _newEntryBloc.submitError(EntryError.startTime);
+                      //   return;
+                      // }
+                      // if (_newEntryBloc.selectedDateOfDay$!.value == 'None') {
+                      //   _newEntryBloc.submitError(EntryError.startDate);
+                      //   return;
+                      // }
+                      // String medicineType = _newEntryBloc
+                      //     .selectedMedicineType.value
+                      //     .toString()
+                      //     .substring(13);
+                      // int interval = _newEntryBloc.selectedIntervals!.value;
+                      // String startTime =
+                      //     _newEntryBloc.selectedTimeOfDay$!.value;
+                      // String startDate =
+                      //     _newEntryBloc.selectedDateOfDay$!.value;
+
+                      // List<int> intIDs = makeIDs(
+                      //   24 / _newEntryBloc.selectedIntervals!.value,
+                      // );
+                      // List<String> notificationIDs =
+                      //     intIDs.map((i) => i.toString()).toList();
+
+                      // Medicine NewEntryMedicine = Medicine(
+                      //   notificationIDs: notificationIDs,
+                      //   medicineName: medicineName,
+                      //   dosage: dosage,
+                      //   medicineType: medicineType,
+                      //   interval: interval,
+                      //   startTime: startTime,
+                      //   startDate: startDate,
+                      // );
+                      // globalBloc.updateMedicineList(NewEntryMedicine);
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const UserMedi(),
+                      //   ),
+                      // );
+                    },
                   ),
                 ),
               ],
@@ -283,6 +360,49 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
         ),
       ),
     );
+  }
+
+  void initializeErrorListen() {
+    _newEntryBloc.errorState!.listen((EntryError error) {
+      switch (error) {
+        case EntryError.nameNull:
+          displayError("Please Enter Medicine's Name");
+          break;
+        case EntryError.nameDuplicate:
+          displayError("Medicine Name Already Exists");
+          break;
+        case EntryError.dosage:
+          displayError("Please Enter Dosage Required");
+          break;
+        case EntryError.interval:
+          displayError("Please Select the reminder's interval");
+          break;
+        case EntryError.startTime:
+          displayError("Please Select the reminder's starting time");
+          break;
+        default:
+      }
+    });
+  }
+
+  void displayError(String error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(error),
+        duration: const Duration(milliseconds: 2000),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  List<int> makeIDs(double n) {
+    var rng = Random();
+    List<int> ids = [];
+    for (int i = 0; i < n; i++) {
+      ids.add(rng.nextInt(1000000000));
+    }
+    return ids;
   }
 }
 

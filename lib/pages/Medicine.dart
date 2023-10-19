@@ -171,95 +171,104 @@ class BottomContainer extends StatelessWidget {
       height: $ScreenHeight * 100,
       width: $ScreenWidth * 100,
       margin: const EdgeInsets.symmetric(vertical: 3),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: GridView.builder(
-          padding: const EdgeInsets.only(top: 1),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          itemCount: 4,
-          itemBuilder: (context, index) {
-            return InkWell(
-              highlightColor: Colors.white,
-              splashColor: Colors.grey,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const MedicineDetails(),
-                  ),
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.only(
-                    left: 2.w, right: 2.w, top: 0.h, bottom: 0.h),
-                margin: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(
-                        'assets/bottle.svg',
-                        height: 8.h,
-                        // ignore: deprecated_member_use
-                        color: Colors.greenAccent,
-                      ),
-                    ),
-                    Text(
-                      'Calpol',
-                      overflow: TextOverflow.fade,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      '8mg',
-                      overflow: TextOverflow.fade,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.black,
-                          ),
-                    ),
-                    const Gap(2),
-                    Text(
-                      'Every 8 Hours',
-                      overflow: TextOverflow.fade,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.black,
-                          ),
-                    ),
-                    Text(
-                      '2:16PM',
-                      overflow: TextOverflow.fade,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.black,
-                          ),
-                    ),
-                    Text(
-                      '10/16/23',
-                      overflow: TextOverflow.fade,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            color: Colors.black,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+      child: MedicinceCard(),
+    );
+  }
+}
+
+class MedicinceCard extends StatelessWidget {
+  const MedicinceCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: GridView.builder(
+        padding: const EdgeInsets.only(top: 1),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
         ),
+        itemCount: 4,
+        itemBuilder: (context, index) {
+          return InkWell(
+            highlightColor: Colors.white,
+            splashColor: Colors.grey,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MedicineDetails(),
+                ),
+              );
+            },
+            child: Container(
+              padding:
+                  EdgeInsets.only(left: 2.w, right: 2.w, top: 0.h, bottom: 0.h),
+              margin: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: SvgPicture.asset(
+                      'assets/bottle.svg',
+                      height: 8.h,
+                      // ignore: deprecated_member_use
+                      color: Colors.greenAccent,
+                    ),
+                  ),
+                  Text(
+                    'Calpol',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    '8mg',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  const Gap(2),
+                  Text(
+                    'Every 8 Hours',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  Text(
+                    '2:16PM',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  Text(
+                    '10/16/23',
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
