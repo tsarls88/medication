@@ -283,74 +283,72 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                   child: ElevatedButton(
                     child: const Text('Confirm'),
                     onPressed: () {
-                      // String? medicineName;
-                      // int? dosage;
+                      String? medicineName;
+                      int? dosage;
 
-                      // if (nameController.text == "") {
-                      //   _newEntryBloc.submitError(EntryError.nameNull);
-                      //   return;
-                      // }
-                      // if (nameController.text == "") {
-                      //   medicineName = nameController.text;
-                      // }
+                      if (nameController.text == "") {
+                        _newEntryBloc.submitError(EntryError.nameNull);
+                        return;
+                      }
+                      if (nameController.text == "") {
+                        medicineName = nameController.text;
+                      }
 
-                      // if (dosageController.text == "") {
-                      //   dosage == 0;
-                      // }
-                      // if (dosageController.text != "") {
-                      //   dosage = int.parse(dosageController.text);
-                      // }
-                      // for (var medicine in globalBloc.medcineList$!.value) {
-                      //   if (medicineName == medicine.medicineName) {
-                      //     _newEntryBloc.submitError(EntryError.nameDuplicate);
-                      //     return;
-                      //   }
-                      // }
-                      // if (_newEntryBloc.selectedIntervals!.value == 0) {
-                      //   _newEntryBloc.submitError(EntryError.interval);
-                      //   return;
-                      // }
-                      // if (_newEntryBloc.selectedTimeOfDay$!.value == 'None') {
-                      //   _newEntryBloc.submitError(EntryError.startTime);
-                      //   return;
-                      // }
-                      // if (_newEntryBloc.selectedDateOfDay$!.value == 'None') {
+                      if (dosageController.text == "") {
+                        dosage == 0;
+                      }
+                      if (dosageController.text != "") {
+                        dosage = int.parse(dosageController.text);
+                      }
+                      for (var medicine in globalBloc.medcineList$!.value) {
+                        if (medicineName == medicine.medicineName) {
+                          _newEntryBloc.submitError(EntryError.nameDuplicate);
+                          return;
+                        }
+                      }
+                      if (_newEntryBloc.selectedIntervals!.value == 0) {
+                        _newEntryBloc.submitError(EntryError.interval);
+                        return;
+                      }
+                      if (_newEntryBloc.selectedTimeOfDay!.value == 'None') {
+                        _newEntryBloc.submitError(EntryError.startTime);
+                        return;
+                      }
+                      // if (_newEntryBloc.selectedDateOfDay$.value == 'None') {
                       //   _newEntryBloc.submitError(EntryError.startDate);
                       //   return;
                       // }
-                      // String medicineType = _newEntryBloc
-                      //     .selectedMedicineType.value
-                      //     .toString()
-                      //     .substring(13);
-                      // int interval = _newEntryBloc.selectedIntervals!.value;
-                      // String startTime =
-                      //     _newEntryBloc.selectedTimeOfDay$!.value;
-                      // String startDate =
-                      //     _newEntryBloc.selectedDateOfDay$!.value;
+                      String medicineType = _newEntryBloc
+                          .selectedMedicineType.value
+                          .toString()
+                          .substring(13);
+                      int interval = _newEntryBloc.selectedIntervals!.value;
+                      String startTime = _newEntryBloc.selectedTimeOfDay!.value;
+                      // String startDate = _newEntryBloc.selectedDateOfDay$!.value;
 
-                      // List<int> intIDs = makeIDs(
-                      //   24 / _newEntryBloc.selectedIntervals!.value,
-                      // );
-                      // List<String> notificationIDs =
-                      //     intIDs.map((i) => i.toString()).toList();
+                      List<int> intIDs = makeIDs(
+                        24 / _newEntryBloc.selectedIntervals!.value,
+                      );
+                      List<String> notificationIDs =
+                          intIDs.map((i) => i.toString()).toList();
 
-                      // Medicine NewEntryMedicine = Medicine(
-                      //   notificationIDs: notificationIDs,
-                      //   medicineName: medicineName,
-                      //   dosage: dosage,
-                      //   medicineType: medicineType,
-                      //   interval: interval,
-                      //   startTime: startTime,
-                      //   startDate: startDate,
-                      // );
-                      // globalBloc.updateMedicineList(NewEntryMedicine);
+                      Medicine NewEntryMedicine = Medicine(
+                        notificationIDs: notificationIDs,
+                        medicineName: medicineName,
+                        dosage: dosage,
+                        medicineType: medicineType,
+                        interval: interval,
+                        startTime: startTime,
+                        // startDate: startDate,
+                      );
+                      globalBloc.updateMedicineList(NewEntryMedicine);
 
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const UserMedi(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserMedi(),
+                        ),
+                      );
                     },
                   ),
                 ),

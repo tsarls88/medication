@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:medication/common/Medicine_main.dart';
 // import 'package:medication/common/medicine_type.dart';
 import 'package:medication/common/show_model.dart';
+import 'package:medication/global_bloc.dart';
 import 'package:medication/medicine_details/medicine_details.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'Insights.dart';
 import 'Calendar.dart';
@@ -49,6 +52,7 @@ class _UserMediState extends State<UserMedi> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     DateTime now = DateTime.now();
     String currentDate = DateFormat('EEEE, d MMMM').format(now);
 
@@ -134,6 +138,24 @@ class _UserMediState extends State<UserMedi> {
             ),
             Divider(
               thickness: $ScreenHeight * 0.1,
+            ),
+            StreamBuilder<List<Medicine>>(
+              stream: globalBloc.medcineList$,
+              builder: (context, snapshot) {
+                return Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(
+                    bottom: 1.h,
+                  ),
+                  child: Text(
+                    !snapshot.hasData ? '0' : snapshot.data!.length.toString(),
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.black,
+                          fontSize: $ScreenHeight * 2.3,
+                        ),
+                  ),
+                );
+              },
             ),
             const BottomContainer(),
           ],

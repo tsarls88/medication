@@ -6,4 +6,5 @@ enum EntryError {
   interval,
   startTime,
   none,
+  startDate,
 }

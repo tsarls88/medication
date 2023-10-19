@@ -25,6 +25,8 @@ class NewEntryBloc {
     _errorState$ = BehaviorSubject<EntryError>();
   }
 
+  get selectedDateOfDay$ => null;
+
   void dispose() {
     _selectedMedicineType$!.close();
     _selectedTimeOfDay$!.close();
