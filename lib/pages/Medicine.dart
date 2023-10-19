@@ -58,6 +58,7 @@ class _UserMediState extends State<UserMedi> {
 
     var $ScreenHeight = MediaQuery.of(context).size.height / 100;
     // var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+    final scrollController = ScrollController();
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -79,86 +80,93 @@ class _UserMediState extends State<UserMedi> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 0.5.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 11),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Today\'s Medicine List',
-                        style: TextStyle(
+      body: Scrollbar(
+        controller: scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 0.5.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 11),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Today\'s Medicine List',
+                          style: TextStyle(
+                              fontSize: $ScreenHeight * 1.8,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          currentDate,
+                          style: TextStyle(
                             fontSize: $ScreenHeight * 1.8,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFD5E8FA),
+                        foregroundColor: Colors.blue.shade800,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      Text(
-                        currentDate,
+                      onPressed: () => showModalBottomSheet(
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        context: context,
+                        builder: (context) => const AddNewTaskModel(),
+                      ),
+                      child: Text(
+                        '+ Add Medicine',
                         style: TextStyle(
                           fontSize: $ScreenHeight * 1.8,
-                          color: Colors.black,
                         ),
                       ),
-                    ],
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFD5E8FA),
-                      foregroundColor: Colors.blue.shade800,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
                     ),
-                    onPressed: () => showModalBottomSheet(
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      context: context,
-                      builder: (context) => const AddNewTaskModel(),
+                  ],
+                ),
+              ),
+              Divider(
+                thickness: $ScreenHeight * 0.1,
+              ),
+              StreamBuilder<List<Medicine>>(
+                stream: globalBloc.medcineList$,
+                builder: (context, snapshot) {
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(
+                      bottom: 1.h,
                     ),
                     child: Text(
-                      '+ Add Medicine',
-                      style: TextStyle(
-                        fontSize: $ScreenHeight * 1.8,
-                      ),
+                      !snapshot.hasData
+                          ? '0'
+                          : snapshot.data!.length.toString(),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            color: Colors.black,
+                            fontSize: $ScreenHeight * 2.3,
+                          ),
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
-            ),
-            Divider(
-              thickness: $ScreenHeight * 0.1,
-            ),
-            StreamBuilder<List<Medicine>>(
-              stream: globalBloc.medcineList$,
-              builder: (context, snapshot) {
-                return Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.only(
-                    bottom: 1.h,
-                  ),
-                  child: Text(
-                    !snapshot.hasData ? '0' : snapshot.data!.length.toString(),
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Colors.black,
-                          fontSize: $ScreenHeight * 2.3,
-                        ),
-                  ),
-                );
-              },
-            ),
-            const BottomContainer(),
-          ],
+              const BottomContainer(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -186,111 +194,156 @@ class BottomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     var $ScreenHeight = MediaQuery.of(context).size.height / 100;
     var $ScreenWidth = MediaQuery.of(context).size.width / 100;
 
-    return Container(
-      height: $ScreenHeight * 100,
-      width: $ScreenWidth * 100,
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      child: MedicinceCard(),
+    return StreamBuilder(
+      stream: globalBloc.medcineList$,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Container();
+        } else if (snapshot.data!.isEmpty) {
+          return Center(
+            child: Text(
+              'No Medicine',
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: Colors.red,
+                    fontSize: $ScreenHeight * 2.3,
+                  ),
+            ),
+          );
+        } else {
+          final scrollController = ScrollController();
+          return Scrollbar(
+            controller: scrollController,
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Container(
+                height: $ScreenHeight * 100,
+                width: $ScreenWidth * 100,
+                margin: const EdgeInsets.symmetric(vertical: 2),
+                child: GridView.builder(
+                  padding: const EdgeInsets.only(top: 1),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    return MedicinceCard(
+                      medicine: snapshot.data![index],
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
 
 class MedicinceCard extends StatelessWidget {
-  const MedicinceCard({super.key});
+  const MedicinceCard({super.key, required this.medicine});
+
+  final Medicine medicine;
+
+  // Hero makeIcon() {
+  //     if(medicine.medicineType == 'Bottle'){
+
+  //     }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        padding: const EdgeInsets.only(top: 1),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        itemCount: 4,
-        itemBuilder: (context, index) {
-          return InkWell(
-            highlightColor: Colors.white,
-            splashColor: Colors.grey,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MedicineDetails(),
-                ),
-              );
-            },
-            child: Container(
-              padding:
-                  EdgeInsets.only(left: 2.w, right: 2.w, top: 0.h, bottom: 0.h),
-              margin: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+    var $ScreenHeight = MediaQuery.of(context).size.height / 100;
+    var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+    return Container(
+      height: $ScreenHeight * 100,
+      width: $ScreenWidth * 100,
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          highlightColor: Colors.white,
+          splashColor: Colors.grey,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MedicineDetails(),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: SvgPicture.asset(
-                      'assets/bottle.svg',
-                      height: 8.h,
-                      // ignore: deprecated_member_use
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                  Text(
-                    'Calpol',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  Text(
-                    '8mg',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  const Gap(2),
-                  Text(
-                    'Every 8 Hours',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  Text(
-                    '2:16PM',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                  Text(
-                    '10/16/23',
-                    overflow: TextOverflow.fade,
-                    textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.black,
-                        ),
-                  ),
-                ],
-              ),
+            );
+          },
+          child: Container(
+            padding:
+                EdgeInsets.only(left: 2.w, right: 2.w, top: 0.h, bottom: 0.h),
+            margin: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
             ),
-          );
-        },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: SvgPicture.asset(
+                    'assets/bottle.svg',
+                    height: 8.h,
+                    // ignore: deprecated_member_use
+                    color: Colors.greenAccent,
+                  ),
+                ),
+                Text(
+                  medicine.medicineName!,
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  '8mg',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                const Gap(2),
+                Text(
+                  'Every 8 Hours',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                Text(
+                  '2:16PM',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+                Text(
+                  '10/16/23',
+                  overflow: TextOverflow.fade,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
