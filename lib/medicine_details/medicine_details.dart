@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:medication/common/Medicine_main.dart';
+import 'package:medication/global_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class MedicineDetails extends StatefulWidget {
@@ -66,6 +69,7 @@ class ButtonDelete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: SizedBox(
@@ -84,7 +88,11 @@ class ButtonDelete extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            openAlertBox(context);
+            openAlertBox(
+              context,
+              _globalBloc,
+              Medicine(),
+            );
           },
           child: Text(
             'Delete',
@@ -99,7 +107,8 @@ class ButtonDelete extends StatelessWidget {
     );
   }
 
-  openAlertBox(BuildContext context) {
+  openAlertBox(
+      BuildContext context, GlobalBloc _globalbloc, Medicine medicine) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -136,7 +145,8 @@ class ButtonDelete extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                //global block
+                _globalbloc.removeMedicine(medicine);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               child: Text(
                 'OK',
