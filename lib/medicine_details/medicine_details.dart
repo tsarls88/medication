@@ -39,7 +39,7 @@ class _MedicineDetailsState extends State<MedicineDetails> {
                   // ignore: deprecated_member_use
                   color: Colors.greenAccent,
                 ),
-                const Column(
+                Column(
                   children: [
                     MainInfoTab(
                       FieldInfo: 'Calpol',
@@ -107,8 +107,7 @@ class ButtonDelete extends StatelessWidget {
     );
   }
 
-  openAlertBox(
-      BuildContext context, GlobalBloc _globalbloc, Medicine medicine) {
+  openAlertBox(BuildContext context, GlobalBloc globalbloc, Medicine medicine) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -145,8 +144,9 @@ class ButtonDelete extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                _globalbloc.removeMedicine(medicine);
-                Navigator.popUntil(context, ModalRoute.withName('/'));
+                globalbloc.removeMedicine(medicine).then((_) {
+                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                });
               },
               child: Text(
                 'OK',
@@ -193,9 +193,11 @@ class ExtendedSection extends StatelessWidget {
 }
 
 class MainInfoTab extends StatelessWidget {
-  const MainInfoTab(
-      {Key? key, required this.FieldInfo, required this.FieldTitle})
-      : super(key: key);
+  const MainInfoTab({
+    Key? key,
+    required this.FieldInfo,
+    required this.FieldTitle,
+  }) : super(key: key);
 
   final String FieldTitle;
   final String FieldInfo;

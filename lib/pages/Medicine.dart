@@ -13,6 +13,7 @@ import 'Insights.dart';
 import 'Calendar.dart';
 import 'Settings.dart';
 import 'package:intl/intl.dart';
+// import 'package:medication/common/medicine_type.dart';
 
 class UserMedi extends StatefulWidget {
   const UserMedi({Key? key}) : super(key: key);
@@ -145,7 +146,7 @@ class _UserMediState extends State<UserMedi> {
                 thickness: $ScreenHeight * 0.1,
               ),
               StreamBuilder<List<Medicine>>(
-                stream: globalBloc.medcineList$,
+                stream: globalBloc.medicineList$,
                 builder: (context, snapshot) {
                   return Container(
                     alignment: Alignment.center,
@@ -154,7 +155,7 @@ class _UserMediState extends State<UserMedi> {
                     ),
                     child: Text(
                       !snapshot.hasData
-                          ? '0'
+                          ? 'No Medicine Listed'
                           : snapshot.data!.length.toString(),
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.black,
@@ -199,7 +200,7 @@ class BottomContainer extends StatelessWidget {
     var $ScreenWidth = MediaQuery.of(context).size.width / 100;
 
     return StreamBuilder(
-      stream: globalBloc.medcineList$,
+      stream: globalBloc.medicineList$,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Container();
@@ -246,15 +247,36 @@ class BottomContainer extends StatelessWidget {
 }
 
 class MedicinceCard extends StatelessWidget {
-  const MedicinceCard({super.key, required this.medicine});
-
+  const MedicinceCard({Key? key, required this.medicine}) : super(key: key);
   final Medicine medicine;
 
-  // Hero makeIcon() {
-  //     if(medicine.medicineType == 'Bottle'){
-
-  //     }
-  // }
+  Hero makeIcon() {
+    if (medicine.medicineType == 'Bottle') {
+      return Hero(
+        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
+        child: SvgPicture.asset('assets/bottle.svg'),
+      );
+    } else if (medicine.medicineType == 'Pill') {
+      return Hero(
+        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
+        child: SvgPicture.asset('assets/pill.svg'),
+      );
+    } else if (medicine.medicineType == 'Syringe') {
+      return Hero(
+        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
+        child: SvgPicture.asset('assets/syringe.svg'),
+      );
+    } else if (medicine.medicineType == 'Tablet') {
+      return Hero(
+        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
+        child: SvgPicture.asset('assets/tablet.svg'),
+      );
+    }
+    return Hero(
+      tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
+      child: const Icon(Icons.error),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -289,23 +311,26 @@ class MedicinceCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: SvgPicture.asset(
-                    'assets/bottle.svg',
-                    height: 8.h,
-                    // ignore: deprecated_member_use
-                    color: Colors.greenAccent,
-                  ),
-                ),
+                makeIcon(),
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: makeIcon(),
+                //   // child: SvgPicture.asset(
+                //   //   'assets/bottle.svg',
+                //   //   height: 8.h,
+                //   //   // ignore: deprecated_member_use
+                //   //   color: Colors.greenAccent,
+                //   // ),
+                // ),
                 Text(
-                  'Biogesic',
-                  // medicine.medicineName!,
+                  // 'Biogesic',
+                  medicine.medicineName!,
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Colors.green,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w800,
                       ),
                 ),
                 Text(
@@ -313,7 +338,9 @@ class MedicinceCard extends StatelessWidget {
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.black,
+                        color: Colors.blue,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w800,
                       ),
                 ),
                 const Gap(2),

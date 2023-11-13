@@ -1,3 +1,4 @@
+// ignore: file_names
 class Medicine {
   final List<dynamic>? notificationIDs;
   final String? medicineName;
@@ -17,13 +18,13 @@ class Medicine {
     this.startTime,
   });
 
-  String get getName => medicineName!;
-  int get getDosage => dosage!;
-  String get getType => medicineType!;
-  int get getInterval => interval!;
-  String get getStartTime => startTime!;
-  List<dynamic> get getIDs => notificationIDs!;
-  String get getStartDate => startDate!;
+  String? get getName => medicineName!;
+  int? get getDosage => dosage!;
+  String? get getType => medicineType!;
+  int? get getInterval => interval!;
+  String? get getStartTime => startTime!;
+  List<dynamic>? get getIDs => notificationIDs!;
+  String? get getStartDate => startDate!;
 
   Map<String, dynamic> toJson() {
     return {
@@ -37,15 +38,15 @@ class Medicine {
     };
   }
 
-  factory Medicine.fromJson(Map<String, dynamic> paredJson) {
+  factory Medicine.fromJson(Map<String, dynamic> parsedJson) {
     return Medicine(
-      notificationIDs: paredJson['ids'],
-      medicineName: paredJson['name'],
-      dosage: paredJson['dosage'],
-      medicineType: paredJson['type'],
-      interval: paredJson['interval'],
-      startTime: paredJson['startTime'],
-      startDate: paredJson['startDate'],
+      notificationIDs: parsedJson['ids'],
+      medicineName: parsedJson['name'],
+      dosage: parsedJson['dosage'],
+      medicineType: parsedJson['type'],
+      interval: parsedJson['interval'],
+      startTime: parsedJson['startTime'],
+      startDate: parsedJson['startDate'],
     );
   }
 }

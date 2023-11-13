@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:gap/gap.dart';
 import 'package:medication/common/select_time_widget.dart';
 import 'package:medication/common/select_date_widget.dart';
-import 'package:rxdart/rxdart.dart';
+// import 'package:rxdart/rxdart.dart';
 
 class AddNewTaskModel extends StatefulWidget {
   const AddNewTaskModel({Key? key}) : super(key: key);
@@ -285,27 +285,27 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                     onPressed: () {
                       String? medicineName;
                       int? dosage;
-
+                      //Medicine Name
                       if (nameController.text == "") {
                         _newEntryBloc.submitError(EntryError.nameNull);
                         return;
                       }
-                      if (nameController.text == "") {
+                      if (nameController.text != "") {
                         medicineName = nameController.text;
                       }
-
+                      // Dosage
                       if (dosageController.text == "") {
                         dosage == 0;
                       }
                       if (dosageController.text != "") {
                         dosage = int.parse(dosageController.text);
                       }
-                      for (var medicine in globalBloc.medcineList$!.value) {
-                        if (medicineName == medicine.medicineName) {
-                          _newEntryBloc.submitError(EntryError.nameDuplicate);
-                          return;
-                        }
-                      }
+                      // for (var medicine in globalBloc.medcineList$!.value) {
+                      //   if (medicineName == medicine.medicineName) {
+                      //     _newEntryBloc.submitError(EntryError.nameDuplicate);
+                      //     return;
+                      //   }
+                      // }
                       if (_newEntryBloc.selectedIntervals!.value == 0) {
                         _newEntryBloc.submitError(EntryError.interval);
                         return;
@@ -326,13 +326,12 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                       String startTime = _newEntryBloc.selectedTimeOfDay!.value;
                       // String startDate = _newEntryBloc.selectedDateOfDay$!.value;
 
-                      List<int> intIDs = makeIDs(
-                        24 / _newEntryBloc.selectedIntervals!.value,
-                      );
+                      List<int> intIDs =
+                          makeIDs(24 / _newEntryBloc.selectedIntervals!.value);
                       List<String> notificationIDs =
                           intIDs.map((i) => i.toString()).toList();
 
-                      Medicine NewEntryMedicine = Medicine(
+                      Medicine newEntryMedicine = Medicine(
                         notificationIDs: notificationIDs,
                         medicineName: medicineName,
                         dosage: dosage,
@@ -341,7 +340,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                         startTime: startTime,
                         // startDate: startDate,
                       );
-                      globalBloc.updateMedicineList(NewEntryMedicine);
+                      globalBloc.updateMedicineList(newEntryMedicine);
 
                       Navigator.push(
                         context,
