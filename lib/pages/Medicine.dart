@@ -85,7 +85,6 @@ class _UserMediState extends State<UserMedi> {
         controller: scrollController,
         thumbVisibility: true,
         child: SingleChildScrollView(
-          controller: scrollController,
           child: Column(
             children: [
               SizedBox(
@@ -250,31 +249,47 @@ class MedicinceCard extends StatelessWidget {
   const MedicinceCard({Key? key, required this.medicine}) : super(key: key);
   final Medicine medicine;
 
-  Hero makeIcon() {
+  Hero makeIcon(double size) {
     if (medicine.medicineType == 'Bottle') {
       return Hero(
-        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
-        child: SvgPicture.asset('assets/bottle.svg'),
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset(
+          'assets/bottle.svg',
+          height: 7.h,
+        ),
       );
     } else if (medicine.medicineType == 'Pill') {
       return Hero(
-        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
-        child: SvgPicture.asset('assets/pill.svg'),
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset(
+          'assets/pill.svg',
+          height: 7.h,
+        ),
       );
     } else if (medicine.medicineType == 'Syringe') {
       return Hero(
-        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
-        child: SvgPicture.asset('assets/syringe.svg'),
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset(
+          'assets/syringe.svg',
+          height: 7.h,
+        ),
       );
     } else if (medicine.medicineType == 'Tablet') {
       return Hero(
-        tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
-        child: SvgPicture.asset('assets/tablet.svg'),
+        tag: medicine.medicineName! + medicine.medicineType!,
+        child: SvgPicture.asset(
+          'assets/tablet.svg',
+          height: 7.h,
+        ),
       );
     }
     return Hero(
-      tag: medicine.medicineName ?? 'N/A${medicine.medicineType!}',
-      child: const Icon(Icons.error),
+      tag: medicine.medicineName! + medicine.medicineType!,
+      child: Icon(
+        Icons.error,
+        color: Colors.greenAccent,
+        size: size,
+      ),
     );
   }
 
@@ -311,7 +326,9 @@ class MedicinceCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                makeIcon(),
+                makeIcon(
+                  5.h,
+                ),
                 // Align(
                 //   alignment: Alignment.centerRight,
                 //   child: makeIcon(),

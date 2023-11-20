@@ -450,7 +450,7 @@ class MedicineTypeColumn extends StatelessWidget {
                   iconValue,
                   height: 50,
                   // ignore: deprecated_member_use
-                  color: isSelected ? Colors.red : Colors.greenAccent,
+                  color: isSelected ? Colors.blue : Colors.greenAccent,
                 ),
               ),
             ),
@@ -461,7 +461,7 @@ class MedicineTypeColumn extends StatelessWidget {
               width: 55,
               height: 40,
               decoration: BoxDecoration(
-                color: isSelected ? Colors.red : Colors.transparent,
+                color: isSelected ? Colors.blue : Colors.transparent,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Center(

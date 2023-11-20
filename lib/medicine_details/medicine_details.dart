@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class MedicineDetails extends StatefulWidget {
-  const MedicineDetails({super.key});
+  const MedicineDetails({Key? key}) : super(key: key);
 
   @override
   State<MedicineDetails> createState() => _MedicineDetailsState();
@@ -20,46 +20,62 @@ class _MedicineDetailsState extends State<MedicineDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Details',
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SvgPicture.asset(
-                  'assets/bottle.svg',
-                  height: 18.h,
-                  // ignore: deprecated_member_use
-                  color: Colors.greenAccent,
-                ),
-                Column(
-                  children: [
-                    MainInfoTab(
-                      FieldInfo: 'Calpol',
-                      FieldTitle: 'Medicine Name',
-                    ),
-                    Gap(7),
-                    MainInfoTab(
-                      FieldInfo: '8 mg',
-                      FieldTitle: 'Dosage',
-                    ),
-                  ],
-                ),
-              ],
+            MainSection(
+              medicine: Medicine(
+                medicineName: '',
+              ),
             ),
-            const Gap(9),
-            const ExtendedSection(),
-            const ButtonDelete(),
+            Gap(9),
+            ExtendedSection(),
+            ButtonDelete(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MainSection extends StatelessWidget {
+  const MainSection({Key? key, this.medicine}) : super(key: key);
+  final Medicine? medicine;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SvgPicture.asset(
+          'assets/bottle.svg',
+          height: 18.h,
+          // ignore: deprecated_member_use
+          color: Colors.greenAccent,
+        ),
+        Column(
+          children: [
+            MainInfoTab(
+              FieldInfo: medicine!.medicineName!,
+              FieldTitle: 'Medicine Name',
+            ),
+            Gap(7),
+            MainInfoTab(
+              FieldInfo: medicine!.dosage == 0
+                  ? 'Not Specified'
+                  : "${medicine!.dosage} mg",
+              FieldTitle: 'Dosage',
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -197,10 +213,12 @@ class MainInfoTab extends StatelessWidget {
     Key? key,
     required this.FieldInfo,
     required this.FieldTitle,
+    this.medicine,
   }) : super(key: key);
 
   final String FieldTitle;
   final String FieldInfo;
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
@@ -281,3 +299,6 @@ class ExtendedInfoTab extends StatelessWidget {
     );
   }
 }
+// class Medicine{
+//   final String? medin
+// }
