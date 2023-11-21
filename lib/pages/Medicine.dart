@@ -219,7 +219,6 @@ class BottomContainer extends StatelessWidget {
             controller: scrollController,
             thumbVisibility: true,
             child: SingleChildScrollView(
-              controller: scrollController,
               child: Container(
                 height: $ScreenHeight * 100,
                 width: $ScreenWidth * 100,
