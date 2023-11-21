@@ -144,25 +144,27 @@ class _UserMediState extends State<UserMedi> {
               Divider(
                 thickness: $ScreenHeight * 0.1,
               ),
-              StreamBuilder<List<Medicine>>(
-                stream: globalBloc.medicineList$,
-                builder: (context, snapshot) {
-                  return Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(
-                      bottom: 1.h,
-                    ),
-                    child: Text(
-                      !snapshot.hasData
-                          ? 'No Medicine Listed'
-                          : snapshot.data!.length.toString(),
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: Colors.black,
-                            fontSize: $ScreenHeight * 2.3,
-                          ),
-                    ),
-                  );
-                },
+              Scrollbar(
+                child: StreamBuilder<List<Medicine>>(
+                  stream: globalBloc.medicineList$,
+                  builder: (context, snapshot) {
+                    return Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(
+                        bottom: 1.h,
+                      ),
+                      child: Text(
+                        !snapshot.hasData
+                            ? 'No Medicine Listed'
+                            : snapshot.data!.length.toString(),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Colors.black,
+                              fontSize: $ScreenHeight * 2.3,
+                            ),
+                      ),
+                    );
+                  },
+                ),
               ),
               const BottomContainer(),
             ],
@@ -306,10 +308,21 @@ class MedicinceCard extends StatelessWidget {
           highlightColor: Colors.white,
           splashColor: Colors.grey,
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MedicineDetails(),
+            Navigator.of(context).push(
+              PageRouteBuilder<void>(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return AnimatedBuilder(
+                    animation: animation,
+                    builder: (context, Widget? child) {
+                      return Opacity(
+                        opacity: animation.value,
+                        child: MedicineDetails(medicine),
+                      );
+                    },
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 500),
               ),
             );
           },
@@ -338,19 +351,24 @@ class MedicinceCard extends StatelessWidget {
                 //   //   color: Colors.greenAccent,
                 //   // ),
                 // ),
-                Text(
-                  // 'Biogesic',
-                  medicine.medicineName!,
-                  overflow: TextOverflow.fade,
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Colors.green,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w800,
-                      ),
+                Hero(
+                  tag: medicine.medicineName!,
+                  child: Text(
+                    // 'Biogesic',
+                    medicine.medicineName!,
+                    overflow: TextOverflow.fade,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.green,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w800,
+                        ),
+                  ),
                 ),
                 Text(
-                  '8mg',
+                  medicine.dosage == 0
+                      ? 'Not Specified'
+                      : "${medicine.dosage} Mg",
                   overflow: TextOverflow.fade,
                   textAlign: TextAlign.start,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(

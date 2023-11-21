@@ -314,17 +314,18 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                         _newEntryBloc.submitError(EntryError.startTime);
                         return;
                       }
-                      // if (_newEntryBloc.selectedDateOfDay$.value == 'None') {
-                      //   _newEntryBloc.submitError(EntryError.startDate);
-                      //   return;
-                      // }
+                      if (_newEntryBloc.selectedDateOfDays!.value == 'None') {
+                        _newEntryBloc.submitError(EntryError.startDate);
+                        return;
+                      }
                       String medicineType = _newEntryBloc
                           .selectedMedicineType.value
                           .toString()
                           .substring(13);
                       int interval = _newEntryBloc.selectedIntervals!.value;
                       String startTime = _newEntryBloc.selectedTimeOfDay!.value;
-                      // String startDate = _newEntryBloc.selectedDateOfDay$!.value;
+                      String startDate =
+                          _newEntryBloc.selectedDateOfDays!.value;
 
                       List<int> intIDs =
                           makeIDs(24 / _newEntryBloc.selectedIntervals!.value);
@@ -338,7 +339,7 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                         medicineType: medicineType,
                         interval: interval,
                         startTime: startTime,
-                        // startDate: startDate,
+                        startDate: startDate,
                       );
                       globalBloc.updateMedicineList(newEntryMedicine);
 

@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class MedicineDetails extends StatefulWidget {
-  const MedicineDetails({Key? key}) : super(key: key);
+  const MedicineDetails(this.medicine, {Key? key}) : super(key: key);
+  final Medicine medicine;
 
   @override
   State<MedicineDetails> createState() => _MedicineDetailsState();
@@ -18,26 +19,27 @@ class MedicineDetails extends StatefulWidget {
 class _MedicineDetailsState extends State<MedicineDetails> {
   @override
   Widget build(BuildContext context) {
+    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Details',
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             MainSection(
-              medicine: Medicine(
-                medicineName: '',
-              ),
+              medicine: widget.medicine,
             ),
             Gap(9),
-            ExtendedSection(),
-            ButtonDelete(),
+            ExtendedSection(medicine: widget.medicine),
+            ButtonDelete(
+              medicine: widget.medicine,
+            ),
           ],
         ),
       ),
@@ -49,22 +51,73 @@ class MainSection extends StatelessWidget {
   const MainSection({Key? key, this.medicine}) : super(key: key);
   final Medicine? medicine;
 
+  Hero makeIcon(double size) {
+    if (medicine!.medicineType == 'Bottle') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/bottle.svg',
+          height: 7.h,
+        ),
+      );
+    } else if (medicine!.medicineType == 'Pill') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/pill.svg',
+          height: 7.h,
+        ),
+      );
+    } else if (medicine!.medicineType == 'Syringe') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/syringe.svg',
+          height: 7.h,
+        ),
+      );
+    } else if (medicine!.medicineType == 'Tablet') {
+      return Hero(
+        tag: medicine!.medicineName! + medicine!.medicineType!,
+        child: SvgPicture.asset(
+          'assets/tablet.svg',
+          height: 7.h,
+        ),
+      );
+    }
+    return Hero(
+      tag: medicine!.medicineName! + medicine!.medicineType!,
+      child: Icon(
+        Icons.error,
+        color: Colors.greenAccent,
+        size: size,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SvgPicture.asset(
-          'assets/bottle.svg',
-          height: 18.h,
-          // ignore: deprecated_member_use
-          color: Colors.greenAccent,
-        ),
+        makeIcon(5.h),
+        // SvgPicture.asset(
+        //   'assets/bottle.svg',
+        //   height: 18.h,
+        //   // ignore: deprecated_member_use
+        //   color: Colors.greenAccent,
+        // ),
         Column(
           children: [
-            MainInfoTab(
-              FieldInfo: medicine!.medicineName!,
-              FieldTitle: 'Medicine Name',
+            Hero(
+              tag: medicine!.medicineName!,
+              child: Material(
+                color: Colors.transparent,
+                child: MainInfoTab(
+                  FieldInfo: medicine!.medicineName!,
+                  FieldTitle: 'Medicine Name',
+                ),
+              ),
             ),
             Gap(7),
             MainInfoTab(
@@ -81,11 +134,12 @@ class MainSection extends StatelessWidget {
 }
 
 class ButtonDelete extends StatelessWidget {
-  const ButtonDelete({super.key});
+  const ButtonDelete({Key? key, this.medicine}) : super(key: key);
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
-    final GlobalBloc _globalBloc = Provider.of<GlobalBloc>(context);
+    final GlobalBloc globalBloc = Provider.of<GlobalBloc>(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: SizedBox(
@@ -104,11 +158,7 @@ class ButtonDelete extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            openAlertBox(
-              context,
-              _globalBloc,
-              Medicine(),
-            );
+            openAlertBox(context, globalBloc);
           },
           child: Text(
             'Delete',
@@ -123,7 +173,7 @@ class ButtonDelete extends StatelessWidget {
     );
   }
 
-  openAlertBox(BuildContext context, GlobalBloc globalbloc, Medicine medicine) {
+  openAlertBox(BuildContext context, GlobalBloc _globalbloc) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -160,9 +210,8 @@ class ButtonDelete extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                globalbloc.removeMedicine(medicine).then((_) {
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
-                });
+                _globalbloc.removeMedicine(medicine!);
+                Navigator.popUntil(context, ModalRoute.withName('/'));
               },
               child: Text(
                 'OK',
@@ -180,28 +229,33 @@ class ButtonDelete extends StatelessWidget {
 }
 
 class ExtendedSection extends StatelessWidget {
-  const ExtendedSection({Key? key}) : super(key: key);
+  const ExtendedSection({Key? key, this.medicine}) : super(key: key);
+  final Medicine? medicine;
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      children: const [
+      children: [
         ExtendedInfoTab(
           FieldTitle: 'Medicine Type',
-          FieldInfo: 'Pill',
+          FieldInfo: medicine!.medicineType! == 'None'
+              ? 'Not Specified'
+              : medicine!.medicineType!,
         ),
         ExtendedInfoTab(
           FieldTitle: 'Dose Interval',
-          FieldInfo: 'Every 8 Hours | 3 times a day',
+          FieldInfo:
+              'Every ${medicine!.interval} Hours | ${medicine!.interval == 24 ? "One time a day" : "${(24 / medicine!.interval!).floor()} Times a day"}',
         ),
         ExtendedInfoTab(
           FieldTitle: 'Start Time',
-          FieldInfo: '2:16PM',
+          FieldInfo:
+              '${medicine!.startTime![0]}${medicine!.startTime![1]} : ${medicine!.startTime![2]}${medicine!.startTime![3]}',
         ),
         ExtendedInfoTab(
           FieldTitle: 'Date',
-          FieldInfo: '10/15/23',
+          FieldInfo: '12/08/23',
         ),
       ],
     );
@@ -299,6 +353,3 @@ class ExtendedInfoTab extends StatelessWidget {
     );
   }
 }
-// class Medicine{
-//   final String? medin
-// }
