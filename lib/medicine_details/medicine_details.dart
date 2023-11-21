@@ -58,6 +58,7 @@ class MainSection extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/bottle.svg',
           height: 7.h,
+          color: Colors.greenAccent,
         ),
       );
     } else if (medicine!.medicineType == 'Pill') {
@@ -66,6 +67,7 @@ class MainSection extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/pill.svg',
           height: 7.h,
+          color: Colors.greenAccent,
         ),
       );
     } else if (medicine!.medicineType == 'Syringe') {
@@ -74,6 +76,7 @@ class MainSection extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/syringe.svg',
           height: 7.h,
+          color: Colors.greenAccent,
         ),
       );
     } else if (medicine!.medicineType == 'Tablet') {
@@ -82,6 +85,7 @@ class MainSection extends StatelessWidget {
         child: SvgPicture.asset(
           'assets/tablet.svg',
           height: 7.h,
+          color: Colors.greenAccent,
         ),
       );
     }
@@ -251,7 +255,7 @@ class ExtendedSection extends StatelessWidget {
         ExtendedInfoTab(
           FieldTitle: 'Start Time',
           FieldInfo:
-              '${medicine!.startTime![0]}${medicine!.startTime![1]} : ${medicine!.startTime![2]}${medicine!.startTime![3]}',
+              '${medicine!.startTime![0]}${medicine!.startTime![1]}${medicine!.startTime![2]}${medicine!.startTime![3]}${medicine!.startTime![4]}',
         ),
         ExtendedInfoTab(
           FieldTitle: 'Date',

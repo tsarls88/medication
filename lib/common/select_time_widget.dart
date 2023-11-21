@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medication/common/convert_time.dart';
+import 'package:medication/pages/new_entry/new_entry_bloc.dart';
+import 'package:provider/provider.dart';
 
 class SelectTime extends StatefulWidget {
   const SelectTime({
@@ -26,6 +28,8 @@ class _SelectTimeState extends State<SelectTime> {
   late String _selectedTimeFormat;
 
   Future<TimeOfDay> _selectTime() async {
+    final NewEntryBloc newEntryBloc =
+        Provider.of<NewEntryBloc>(context, listen: false);
     final TimeOfDay? picked =
         await showTimePicker(context: context, initialTime: _time);
 
@@ -34,6 +38,9 @@ class _SelectTimeState extends State<SelectTime> {
         _time = picked;
         _clicked = true;
         _selectedTimeFormat = picked.period == DayPeriod.am ? 'AM' : 'PM';
+
+        newEntryBloc.updateTime(convertTime(_time.hour, _time.minute) +
+            convertTime(_time.hour, _time.minute));
       });
     }
     return picked!;

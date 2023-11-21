@@ -200,33 +200,33 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       MedicineTypeColumn(
-                        medicineType: MedicineType.bottle,
+                        medicineType: MedicineType.Bottle,
                         name: 'Bottle',
                         iconValue: 'assets/bottle.svg',
                         isSelected:
-                            snapshot.data == MedicineType.bottle ? true : false,
+                            snapshot.data == MedicineType.Bottle ? true : false,
                       ),
                       MedicineTypeColumn(
-                        medicineType: MedicineType.pill,
+                        medicineType: MedicineType.Pill,
                         name: 'Pill',
                         iconValue: 'assets/pill.svg',
                         isSelected:
-                            snapshot.data == MedicineType.pill ? true : false,
+                            snapshot.data == MedicineType.Pill ? true : false,
                       ),
                       MedicineTypeColumn(
-                        medicineType: MedicineType.syringe,
+                        medicineType: MedicineType.Syringe,
                         name: 'Syringe',
                         iconValue: 'assets/syringe.svg',
-                        isSelected: snapshot.data == MedicineType.syringe
+                        isSelected: snapshot.data == MedicineType.Syringe
                             ? true
                             : false,
                       ),
                       MedicineTypeColumn(
-                        medicineType: MedicineType.tablet,
+                        medicineType: MedicineType.Tablet,
                         name: 'Tablet',
                         iconValue: 'assets/tablet.svg',
                         isSelected:
-                            snapshot.data == MedicineType.tablet ? true : false,
+                            snapshot.data == MedicineType.Tablet ? true : false,
                       ),
                     ],
                   );
