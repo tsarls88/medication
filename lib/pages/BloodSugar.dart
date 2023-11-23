@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:medication/common/show_Bsugar_model.dart';
 import 'package:medication/pages/Calendar.dart';
 import 'package:medication/pages/Insights.dart';
 import 'package:medication/pages/Settings.dart';
+import 'package:sizer/sizer.dart';
 
 class BloodSugar extends StatefulWidget {
   const BloodSugar({super.key});
@@ -42,6 +45,12 @@ class _BloodSugarState extends State<BloodSugar> {
 
   @override
   Widget build(BuildContext context) {
+    var $ScreenHeight = MediaQuery.of(context).size.height / 100;
+    DateTime now = DateTime.now();
+    final scrollController = ScrollController();
+
+    String currentDate = DateFormat('EEEE, d MMMM').format(now);
+
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
@@ -61,6 +70,76 @@ class _BloodSugarState extends State<BloodSugar> {
             ),
           ),
         ],
+      ),
+      body: Scrollbar(
+        controller: scrollController,
+        thumbVisibility: true,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 0.5.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Today\'s Blood Sugar List',
+                          style: TextStyle(
+                            fontSize: $ScreenHeight * 1.8,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          currentDate,
+                          style: TextStyle(
+                            fontSize: $ScreenHeight * 1.8,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFD5E8FA),
+                        foregroundColor: Colors.blue.shade800,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      onPressed: () => showModalBottomSheet(
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        context: context,
+                        builder: (context) => const AddSugarTaskModel(),
+                      ),
+                      child: Text(
+                        '+ Add List',
+                        style: TextStyle(
+                          fontSize: $ScreenHeight * 1.8,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                thickness: $ScreenHeight * 0.1,
+              )
+            ],
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
