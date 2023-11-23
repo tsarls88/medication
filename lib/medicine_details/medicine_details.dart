@@ -105,12 +105,6 @@ class MainSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         makeIcon(5.h),
-        // SvgPicture.asset(
-        //   'assets/bottle.svg',
-        //   height: 18.h,
-        //   // ignore: deprecated_member_use
-        //   color: Colors.greenAccent,
-        // ),
         Column(
           children: [
             Hero(
@@ -123,7 +117,7 @@ class MainSection extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(7),
+            const Gap(7),
             MainInfoTab(
               FieldInfo: medicine!.dosage == 0
                   ? 'Not Specified'

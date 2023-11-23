@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:medication/common/Medicine_main.dart';
 import 'package:medication/common/errors.dart';
@@ -63,6 +65,8 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
   late TextEditingController nameController;
   late TextEditingController dosageController;
 
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
   late NewEntryBloc _newEntryBloc;
   late GlobalKey<ScaffoldState> _scaffoldkey;
 
@@ -83,8 +87,11 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
     nameController = TextEditingController();
     dosageController = TextEditingController();
 
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     _newEntryBloc = NewEntryBloc();
     _scaffoldkey = GlobalKey<ScaffoldState>();
+    initializeNotifications();
     // initializeErrorListen();
   }
 
@@ -343,6 +350,8 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
                       );
                       globalBloc.updateMedicineList(newEntryMedicine);
 
+                      scheduleNotification(newEntryMedicine);
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -401,6 +410,67 @@ class _AddNewTaskModelState extends State<AddNewTaskModel> {
       ids.add(rng.nextInt(1000000000));
     }
     return ids;
+  }
+
+  initializeNotifications() async {
+    var initializationSettingsAndroid =
+        const AndroidInitializationSettings('@mipmap/launcher_icon');
+
+    var initializationSettingsIOS = const DarwinInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future onSelectNotification(String? payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const UserMedi()));
+  }
+
+  Future<void> scheduleNotification(Medicine medicine) async {
+    var hour = int.parse(medicine.startTime![0] + medicine.startTime![1]);
+    var ogValue = hour;
+    var minute = int.parse(medicine.startTime![2] + medicine.startTime![3]);
+
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'repeatDailyAtTime channel id',
+      'repeatDailyAtTime channel name',
+      importance: Importance.max,
+      ledColor: Colors.blue,
+      ledOffMs: 1000,
+      ledOnMs: 1000,
+      enableLights: true,
+    );
+
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    for (int i = 0; i < (24 / medicine.interval!).floor(); i++) {
+      if (hour + (medicine.interval! * i) > 23) {
+        hour = hour + (medicine.interval! * i) - 24;
+      } else {
+        hour = hour + (medicine.interval! * i);
+      }
+      await flutterLocalNotificationsPlugin.periodicallyShow(
+        int.parse(medicine.notificationIDs![i]),
+        'Reminder: ${medicine.medicineName}',
+        medicine.medicineType.toString() != MedicineType.None.toString()
+            ? 'It is time to take your  ${medicine.medicineType!.toLowerCase()}, according to schedule'
+            : 'It is time to take your medicine, according to schedule',
+        TimeOfDay(hour: hour, minute: minute) as RepeatInterval,
+        platformChannelSpecifics,
+      );
+      hour = ogValue;
+    }
   }
 }
 

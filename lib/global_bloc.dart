@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:medication/common/Medicine_main.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,8 @@ class GlobalBloc {
   }
 
   Future removeMedicine(Medicine toBeRemoved) async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
     List<String> medicineJsonList = [];
 
@@ -20,6 +23,10 @@ class GlobalBloc {
     blockList.removeWhere(
         (medicine) => medicine.medicineName == toBeRemoved.medicineName);
 
+    for (int i = 0; i < (24 / toBeRemoved.interval!).floor(); i++) {
+      flutterLocalNotificationsPlugin
+          .cancel(int.parse(toBeRemoved.notificationIDs![i]));
+    }
     if (blockList.isNotEmpty) {
       for (var blockMedicine in blockList) {
         String medicineJson = jsonEncode(blockMedicine.toJson());
