@@ -56,118 +56,120 @@ class _BloodSugarState extends State<BloodSugar> {
 
     String currentDate = DateFormat('EEEE, d MMMM').format(now);
 
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(CupertinoIcons.bell),
-                ),
-              ],
+    return ProviderScope(
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.bell),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      body: ProviderScope(
-        child: Scrollbar(
-          controller: scrollController,
-          thumbVisibility: true,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 0.5.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
+          ],
+        ),
+        body: ProviderScope(
+          child: Scrollbar(
+            controller: scrollController,
+            thumbVisibility: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 0.5.h,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Today\'s Blood Sugar List',
-                            style: TextStyle(
-                              fontSize: $ScreenHeight * 1.8,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Today\'s Blood Sugar List',
+                              style: TextStyle(
+                                fontSize: $ScreenHeight * 1.8,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              currentDate,
+                              style: TextStyle(
+                                fontSize: $ScreenHeight * 1.8,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFD5E8FA),
+                            foregroundColor: Colors.blue.shade800,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          Text(
-                            currentDate,
+                          onPressed: () => showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            context: context,
+                            builder: (context) => const AddSugarTaskModel(),
+                          ),
+                          child: Text(
+                            '+ Add List',
                             style: TextStyle(
                               fontSize: $ScreenHeight * 1.8,
-                              color: Colors.black,
                             ),
                           ),
-                        ],
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD5E8FA),
-                          foregroundColor: Colors.blue.shade800,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
                         ),
-                        onPressed: () => showModalBottomSheet(
-                          isScrollControlled: true,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          context: context,
-                          builder: (context) => const AddSugarTaskModel(),
-                        ),
-                        child: Text(
-                          '+ Add List',
-                          style: TextStyle(
-                            fontSize: $ScreenHeight * 1.8,
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  thickness: $ScreenHeight * 0.1,
-                ),
-                // Card List Task
-                Gap(18),
-                ListView.builder(
-                  itemCount: 1,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) => const CardToDoListWidget(),
-                ),
-              ],
+                  Divider(
+                    thickness: $ScreenHeight * 0.1,
+                  ),
+                  // Card List Task
+                  Gap(18),
+                  ListView.builder(
+                    itemCount: 1,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => const CardToDoListWidget(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigationBottomBar,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.insights_outlined), label: 'Insights'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
-        ],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _navigationBottomBar,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.insights_outlined), label: 'Insights'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Settings'),
+          ],
+        ),
       ),
     );
   }

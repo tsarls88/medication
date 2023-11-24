@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -8,7 +7,7 @@ import 'package:medication/Widget/textfield_Widget.dart';
 import 'package:medication/provider/date_time_provider.dart';
 
 class AddSugarTaskModel extends ConsumerWidget {
-  const AddSugarTaskModel({super.key});
+  const AddSugarTaskModel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,7 +68,7 @@ class AddSugarTaskModel extends ConsumerWidget {
                 DateTimeWidget(
                   titleText: 'Date',
                   valueText: dateProv,
-                  iconSection: CupertinoIcons.calendar,
+                  iconSection: Icons.calendar_today,
                   onTap: () async {
                     final getValue = await showDatePicker(
                       context: context,
@@ -89,7 +88,7 @@ class AddSugarTaskModel extends ConsumerWidget {
                 DateTimeWidget(
                   titleText: 'Time',
                   valueText: ref.watch(timeProvider),
-                  iconSection: CupertinoIcons.clock,
+                  iconSection: Icons.access_time,
                   onTap: () async {
                     final getTime = await showTimePicker(
                       context: context,

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -25,6 +27,14 @@ class UserMedi extends StatefulWidget {
 
 class _UserMediState extends State<UserMedi> {
   int _selectedIndex = 0;
+  GlobalBloc? globalBloc;
+
+  @override
+  void initState() {
+    globalBloc = GlobalBloc();
+
+    super.initState();
+  }
 
   void _navigationBottomBar(int index) {
     if (index == 0 && _selectedIndex == index) {
@@ -61,129 +71,133 @@ class _UserMediState extends State<UserMedi> {
     // var $ScreenWidth = MediaQuery.of(context).size.width / 100;
     final scrollController = ScrollController();
 
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Row(
+    return Provider<GlobalBloc>.value(
+      value: globalBloc!,
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.bell),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        body: Scrollbar(
+          controller: scrollController,
+          thumbVisibility: true,
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(CupertinoIcons.bell),
+                SizedBox(
+                  height: 0.5.h,
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 11),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Today\'s Medicine List',
+                            style: TextStyle(
+                                fontSize: $ScreenHeight * 1.8,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          Text(
+                            currentDate,
+                            style: TextStyle(
+                              fontSize: $ScreenHeight * 1.8,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFD5E8FA),
+                          foregroundColor: Colors.blue.shade800,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () => showModalBottomSheet(
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          context: context,
+                          builder: (context) => const AddNewTaskModel(),
+                        ),
+                        child: Text(
+                          '+ Add Medicine',
+                          style: TextStyle(
+                            fontSize: $ScreenHeight * 1.8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(
+                  thickness: $ScreenHeight * 0.1,
+                ),
+                Scrollbar(
+                  child: StreamBuilder<List<Medicine>>(
+                    stream: globalBloc.medicineList$,
+                    builder: (context, snapshot) {
+                      return Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.only(
+                          bottom: 1.h,
+                        ),
+                        child: Text(
+                          !snapshot.hasData
+                              ? 'No Medicine Listed'
+                              : snapshot.data!.length.toString(),
+                          style:
+                              Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                    color: Colors.black,
+                                    fontSize: $ScreenHeight * 2.3,
+                                  ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const BottomContainer(),
               ],
             ),
           ),
-        ],
-      ),
-      body: Scrollbar(
-        controller: scrollController,
-        thumbVisibility: true,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 0.5.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 11),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Today\'s Medicine List',
-                          style: TextStyle(
-                              fontSize: $ScreenHeight * 1.8,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          currentDate,
-                          style: TextStyle(
-                            fontSize: $ScreenHeight * 1.8,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD5E8FA),
-                        foregroundColor: Colors.blue.shade800,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () => showModalBottomSheet(
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        context: context,
-                        builder: (context) => const AddNewTaskModel(),
-                      ),
-                      child: Text(
-                        '+ Add Medicine',
-                        style: TextStyle(
-                          fontSize: $ScreenHeight * 1.8,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                thickness: $ScreenHeight * 0.1,
-              ),
-              Scrollbar(
-                child: StreamBuilder<List<Medicine>>(
-                  stream: globalBloc.medicineList$,
-                  builder: (context, snapshot) {
-                    return Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.only(
-                        bottom: 1.h,
-                      ),
-                      child: Text(
-                        !snapshot.hasData
-                            ? 'No Medicine Listed'
-                            : snapshot.data!.length.toString(),
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              color: Colors.black,
-                              fontSize: $ScreenHeight * 2.3,
-                            ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const BottomContainer(),
-            ],
-          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigationBottomBar,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.insights_outlined), label: 'Insights'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
-        ],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _navigationBottomBar,
+          type: BottomNavigationBarType.fixed,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.insights_outlined), label: 'Insights'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_month_outlined), label: 'Calendar'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Settings'),
+          ],
+        ),
       ),
     );
   }
