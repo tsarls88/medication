@@ -46,6 +46,8 @@ dependencies:
   flutter_local_notifications:
   riverpod: ^2.4.8
   flutter_riverpod: ^2.3.6
+  firebase_core: ^2.11.0
+  cloud_firestore: ^4.6.0
 
 dev_dependencies:
   flutter_test:

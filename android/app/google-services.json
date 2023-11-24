@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "154915501650",
+    "project_id": "todo-bsugar",
+    "storage_bucket": "todo-bsugar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:154915501650:android:2e2e336ab016c358bed18b",
+        "android_client_info": {
+          "package_name": "com.example.medication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPeMa8BA5v6TrjFqI_a_xSmAPbaWFaUSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
