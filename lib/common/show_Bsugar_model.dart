@@ -11,9 +11,8 @@ import 'package:riverpod/riverpod.dart';
 
 class AddSugarTaskModel extends ConsumerWidget {
   AddSugarTaskModel({Key? key}) : super(key: key);
-
   final titleController = TextEditingController();
-  final noteController = TextEditingController();
+  final notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,7 +54,11 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            const TextFieldWidget(maxLine: 1, hintText: 'mmol/L'),
+            TextFieldWidget(
+              maxLine: 1,
+              hintText: 'mmol/L',
+              // txtController: titleController,
+            ),
             const Gap(10),
             const Text(
               'Notes',
@@ -66,7 +69,11 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            const TextFieldWidget(maxLine: 5, hintText: 'Add Description'),
+            TextFieldWidget(
+              maxLine: 5,
+              hintText: 'Add Description',
+              // txtController: notesController,
+            ),
             const Gap(10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,15 +153,42 @@ class AddSugarTaskModel extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
-                      int sugarConcentration = int.parse(titleController.text);
-                      String notes = noteController.text;
-                      ref.read(serviceProvider).addTask(TodoModel(
-                          sugarConcentration: sugarConcentration,
-                          notes: notes,
-                          dateTask: ref.read(dateProvider),
-                          timeTask: ref.read(timeProvider)));
+                      // final sugarConcentration =
+                      //     int.tryParse(titleController.text);
+                      // if (sugarConcentration != null) {
 
-                      print('data saving');
+                      ref.read(serviceProvider).addTask(TodoModel(
+                            sugarConcentration: titleController.text,
+                            notes: notesController.text,
+                            dateTask: ref.read(dateProvider),
+                            timeTask: ref.read(timeProvider),
+                            // isDone: false,
+                          ));
+
+                      titleController.clear();
+                      notesController.clear();
+
+                      Navigator.pop(context);
+
+                      print('Data saved');
+
+                      // } else {
+                      //   // Handle invalid input
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (context) => AlertDialog(
+                      //       title: const Text('Invalid Input'),
+                      //       content: const Text(
+                      //           'Please enter a valid sugar concentration.'),
+                      //       actions: [
+                      //         TextButton(
+                      //           onPressed: () => Navigator.pop(context),
+                      //           child: const Text('OK'),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   );
+                      // }
                     },
                     child: const Text('Create'),
                   ),

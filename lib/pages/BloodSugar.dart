@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:medication/Widget/card_todo_widget.dart';
+import 'package:medication/Widget/main_card_todo_widget.dart';
 import 'package:medication/common/show_Bsugar_model.dart';
 import 'package:medication/pages/Calendar.dart';
 import 'package:medication/pages/Insights.dart';
@@ -145,12 +146,8 @@ class _BloodSugarState extends State<BloodSugar> {
                     thickness: $ScreenHeight * 0.1,
                   ),
                   // Card List Task
-                  Gap(18),
-                  ListView.builder(
-                    itemCount: 1,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => const CardToDoListWidget(),
-                  ),
+                  const Gap(18),
+                  MainToDoCard(),
                 ],
               ),
             ),

@@ -31,7 +31,7 @@ class UserMenu extends StatelessWidget {
     Navigator.of(ctx).push(
       MaterialPageRoute(
         builder: (_) {
-          return const BloodSugar();
+          return BloodSugar();
         },
       ),
     );
