@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medication/firebase_options.dart';
 import 'package:medication/global_bloc.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -34,18 +35,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<GlobalBloc>.value(
-      value: globalBloc!,
-      // value: newEntryBloc!,
-      child: Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: const HomePage(),
-            theme: ThemeData(primarySwatch: Colors.lightBlue),
-          );
-        },
-      ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: const HomePage(),
+          theme: ThemeData(primarySwatch: Colors.lightBlue),
+        );
+      },
     );
   }
 }
