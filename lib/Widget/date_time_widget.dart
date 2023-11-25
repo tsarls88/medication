@@ -23,9 +23,9 @@ class DateTimeWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Date',
-            style: TextStyle(
+          Text(
+            titleText,
+            style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
               color: Colors.black,

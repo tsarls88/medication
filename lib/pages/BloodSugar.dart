@@ -129,7 +129,7 @@ class _BloodSugarState extends State<BloodSugar> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             context: context,
-                            builder: (context) => const AddSugarTaskModel(),
+                            builder: (context) => AddSugarTaskModel(),
                           ),
                           child: Text(
                             '+ Add List',

@@ -4,11 +4,16 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:medication/Widget/date_time_widget.dart';
 import 'package:medication/Widget/textfield_Widget.dart';
+import 'package:medication/model/todo_model.dart';
 import 'package:medication/provider/date_time_provider.dart';
+import 'package:medication/provider/service_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
 class AddSugarTaskModel extends ConsumerWidget {
-  const AddSugarTaskModel({Key? key}) : super(key: key);
+  AddSugarTaskModel({Key? key}) : super(key: key);
+
+  final titleController = TextEditingController();
+  final noteController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -140,7 +145,17 @@ class AddSugarTaskModel extends ConsumerWidget {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      int sugarConcentration = int.parse(titleController.text);
+                      String notes = noteController.text;
+                      ref.read(serviceProvider).addTask(TodoModel(
+                          sugarConcentration: sugarConcentration,
+                          notes: notes,
+                          dateTask: ref.read(dateProvider),
+                          timeTask: ref.read(timeProvider)));
+
+                      print('data saving');
+                    },
                     child: const Text('Create'),
                   ),
                 ),
