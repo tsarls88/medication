@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -9,10 +10,22 @@ import 'package:medication/provider/date_time_provider.dart';
 import 'package:medication/provider/service_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
+// ignore: must_be_immutable
 class AddSugarTaskModel extends ConsumerWidget {
   AddSugarTaskModel({Key? key}) : super(key: key);
   final titleController = TextEditingController();
   final notesController = TextEditingController();
+
+  final sugarConcentrationNotifier = ValueNotifier<String>('');
+
+  // String sugar_concentration = '';
+  // String notes = '';
+  // final sugarController = TextEditingController();
+
+  CollectionReference<Map<String, dynamic>> todoCollection =
+      FirebaseFirestore.instance.collection('todo App');
+  final firestoreProvider =
+      Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,10 +67,14 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            TextFieldWidget(
-              maxLine: 1,
-              hintText: 'mmol/L',
-              // txtController: titleController,
+            TextFormField(
+              // controller: titleController,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: 'mmol/L',
+              ),
             ),
             const Gap(10),
             const Text(
@@ -69,12 +86,16 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            TextFieldWidget(
-              maxLine: 5,
-              hintText: 'Add Description',
-              // txtController: notesController,
+            TextFormField(
+              // controller: notesController,
+              textCapitalization: TextCapitalization.words,
+              maxLines: 5,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: 'Add Description',
+              ),
             ),
-            const Gap(10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -153,42 +174,34 @@ class AddSugarTaskModel extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
-                      // final sugarConcentration =
-                      //     int.tryParse(titleController.text);
-                      // if (sugarConcentration != null) {
+                      final sugarConcentrationValue = titleController.text;
+                      final notesValue = notesController.text;
+                      final dateTaskValue = ref.read(dateProvider);
+                      final timeTaskValue = ref.read(timeProvider);
 
                       ref.read(serviceProvider).addTask(TodoModel(
-                            sugarConcentration: titleController.text,
-                            notes: notesController.text,
-                            dateTask: ref.read(dateProvider),
-                            timeTask: ref.read(timeProvider),
-                            // isDone: false,
+                            sugarConcentration: sugarConcentrationValue,
+                            notes: notesValue,
+                            dateTask: dateTaskValue,
+                            timeTask: timeTaskValue,
                           ));
+                      // final sugarConcentrationValue =
+                      //     ref.read<_TextDataSugarState>().sugarConcentration;
+                      // final notesValue =
+                      //     ref.read<_TextDataSugarState>().notesController.text;
+                      // final dateTaskValue = ref.read(dateProvider);
+                      // final timeTaskValue = ref.read(timeProvider);
 
-                      titleController.clear();
-                      notesController.clear();
+                      // ref.read(serviceProvider).addTask(TodoModel(
+                      //       sugarConcentration: sugarConcentrationValue,
+                      //       notes: notesValue,
+                      //       dateTask: dateTaskValue,
+                      //       timeTask: timeTaskValue,
+                      //     ));
 
                       Navigator.pop(context);
 
                       print('Data saved');
-
-                      // } else {
-                      //   // Handle invalid input
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) => AlertDialog(
-                      //       title: const Text('Invalid Input'),
-                      //       content: const Text(
-                      //           'Please enter a valid sugar concentration.'),
-                      //       actions: [
-                      //         TextButton(
-                      //           onPressed: () => Navigator.pop(context),
-                      //           child: const Text('OK'),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   );
-                      // }
                     },
                     child: const Text('Create'),
                   ),

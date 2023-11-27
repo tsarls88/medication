@@ -45,16 +45,14 @@ class CardToDoListWidget extends ConsumerWidget {
                             contentPadding: EdgeInsets.zero,
                             title: Text(
                               todoData[getIndex].sugarConcentration,
-                              style: TextStyle(
-                                fontSize: $ScreenHeight * 2.3,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
                             ),
                             subtitle: Text(
                               todoData[getIndex].notes,
-                              style: TextStyle(
-                                fontSize: $ScreenHeight * 2.0,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -81,7 +79,7 @@ class CardToDoListWidget extends ConsumerWidget {
                                   ),
                                   Row(
                                     children: [
-                                      Text('Today'),
+                                      Text(todoData[getIndex].dateTask),
                                       Gap(10),
                                       Text(todoData[getIndex].timeTask)
                                     ],

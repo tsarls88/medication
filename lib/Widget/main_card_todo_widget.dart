@@ -10,9 +10,11 @@ class MainToDoCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todoData = ref.watch(fetchStreamProvider);
     return ListView.builder(
-      itemCount: todoData.value!.length,
+      itemCount: todoData.value?.length ?? 0,
       shrinkWrap: true,
-      itemBuilder: (context, index) => CardToDoListWidget(getIndex: index),
+      itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.only(bottom: 8.0),
+          child: CardToDoListWidget(getIndex: index)),
     );
   }
 }
