@@ -51,7 +51,7 @@ class _BloodSugarState extends State<BloodSugar> {
   @override
   Widget build(BuildContext context) {
     var $ScreenHeight = MediaQuery.of(context).size.height / 100;
-    var $ScreenWidth = MediaQuery.of(context).size.width / 100;
+    // var $ScreenWidth = MediaQuery.of(context).size.width / 100;
     DateTime now = DateTime.now();
     final scrollController = ScrollController();
 

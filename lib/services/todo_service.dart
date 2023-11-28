@@ -8,4 +8,9 @@ class TodoService {
   void addTask(TodoModel model) {
     todoCollection.add(model.toMap());
   }
+
+  //DELETE
+  void deleteTask(String? docID) {
+    todoCollection.doc(docID).delete();
+  }
 }

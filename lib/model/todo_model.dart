@@ -25,7 +25,8 @@ class TodoModel {
     };
   }
 
-  factory TodoModel.fromMap(Map<String, dynamic> map) {
+  factory TodoModel.fromMap(Map<String, dynamic> map,
+      {required String sugarConcentration}) {
     return TodoModel(
       docID: map['docID'] != null ? map['docID'] as String : null,
       sugarConcentration: map['sugarConcentration'] as String,

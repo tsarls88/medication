@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:medication/Widget/date_time_widget.dart';
-import 'package:medication/Widget/textfield_Widget.dart';
+// import 'package:medication/Widget/textfield_Widget.dart';
 import 'package:medication/model/todo_model.dart';
 import 'package:medication/provider/date_time_provider.dart';
 import 'package:medication/provider/service_provider.dart';
@@ -12,24 +12,18 @@ import 'package:riverpod/riverpod.dart';
 
 // ignore: must_be_immutable
 class AddSugarTaskModel extends ConsumerWidget {
-  AddSugarTaskModel({Key? key}) : super(key: key);
-  final titleController = TextEditingController();
-  final notesController = TextEditingController();
-
-  final sugarConcentrationNotifier = ValueNotifier<String>('');
-
-  // String sugar_concentration = '';
-  // String notes = '';
-  // final sugarController = TextEditingController();
-
-  CollectionReference<Map<String, dynamic>> todoCollection =
-      FirebaseFirestore.instance.collection('todo App');
-  final firestoreProvider =
-      Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
+  const AddSugarTaskModel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateProv = ref.watch(dateProvider);
+    // final TextEditingController sugarConcentrationController =
+    //     TextEditingController();
+    final notesController = TextEditingController();
+    final sugarConcentrationState = ref.watch(sugarConcentrationProvider);
+    final sugarConcentrationController =
+        TextEditingController(text: sugarConcentrationState);
+
     return ProviderScope(
       child: Container(
         padding: const EdgeInsets.all(30),
@@ -40,7 +34,7 @@ class AddSugarTaskModel extends ConsumerWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const SizedBox(
               width: double.infinity,
               child: Text(
@@ -68,13 +62,15 @@ class AddSugarTaskModel extends ConsumerWidget {
             ),
             const Gap(10),
             TextFormField(
-              // controller: titleController,
-              textCapitalization: TextCapitalization.words,
+              controller: sugarConcentrationController,
               decoration: const InputDecoration(
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 hintText: 'mmol/L',
               ),
+              onChanged: (value) {
+                sugarConcentrationState;
+              },
             ),
             const Gap(10),
             const Text(
@@ -87,7 +83,7 @@ class AddSugarTaskModel extends ConsumerWidget {
             ),
             const Gap(10),
             TextFormField(
-              // controller: notesController,
+              controller: notesController,
               textCapitalization: TextCapitalization.words,
               maxLines: 5,
               decoration: const InputDecoration(
@@ -95,6 +91,9 @@ class AddSugarTaskModel extends ConsumerWidget {
                 focusedBorder: InputBorder.none,
                 hintText: 'Add Description',
               ),
+              // onChanged: (value) {
+              //   TodoModel.notes = value;
+              // },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +173,8 @@ class AddSugarTaskModel extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
-                      final sugarConcentrationValue = titleController.text;
+                      final sugarConcentrationValue =
+                          ref.read(sugarConcentrationProvider);
                       final notesValue = notesController.text;
                       final dateTaskValue = ref.read(dateProvider);
                       final timeTaskValue = ref.read(timeProvider);
@@ -201,7 +201,7 @@ class AddSugarTaskModel extends ConsumerWidget {
 
                       Navigator.pop(context);
 
-                      print('Data saved');
+                      // print('Data saved');
                     },
                     child: const Text('Create'),
                   ),
