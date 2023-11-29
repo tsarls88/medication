@@ -7,15 +7,15 @@ import 'package:medication/pages/Medicine.dart';
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});
 
-  void navigateMediPage(BuildContext ctx) {
-    Navigator.of(ctx).push(
-      MaterialPageRoute(
-        builder: (_) {
-          return const UserMedi();
-        },
-      ),
-    );
-  }
+  // void navigateMediPage(BuildContext ctx) {
+  //   Navigator.of(ctx).push(
+  //     MaterialPageRoute(
+  //       builder: (_) {
+  //         return const UserMedi();
+  //       },
+  //     ),
+  //   );
+  // }
 
   void navigateBloodPressure(BuildContext ctx) {
     Navigator.of(ctx).push(

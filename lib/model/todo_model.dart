@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TodoModel {
   String? docID;
-  String sugarConcentration;
-  String notes;
-  String dateTask;
-  String timeTask;
+  final String sugarConcentration;
+  final String notes;
+  final String dateTask;
+  final String timeTask;
 
   TodoModel({
     this.docID,

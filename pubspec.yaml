@@ -41,7 +41,7 @@ dependencies:
   sizer: ^2.0.15
   rxdart:
   provider:
-  shared_preferences: ^2.2.1
+
   gap: ^3.0.1
   flutter_local_notifications:
   riverpod: ^2.4.8

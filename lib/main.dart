@@ -2,8 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:medication/firebase_options.dart';
-import 'package:medication/global_bloc.dart';
-import 'package:provider/provider.dart';
+
 import 'package:sizer/sizer.dart';
 import 'homepage.dart';
 
@@ -23,15 +22,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GlobalBloc? globalBloc;
-  // NewEntryBloc? newEntryBloc;
+  // GlobalBloc? globalBloc;
+  // // NewEntryBloc? newEntryBloc;
 
-  @override
-  void initState() {
-    globalBloc = GlobalBloc();
-    // newEntryBloc = NewEntryBloc();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   globalBloc = GlobalBloc();
+  //   // newEntryBloc = NewEntryBloc();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -11,10 +11,19 @@ import 'package:medication/provider/date_time_provider.dart';
 import 'package:medication/provider/service_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
+// ignore: must_be_immutable
 class AddSugarTaskModel extends ConsumerWidget {
   AddSugarTaskModel({Key? key}) : super(key: key);
-  final sugarConcentrationController = TextEditingController();
+
+  final TextEditingController sugarConcentrationController =
+      TextEditingController(text: '');
   final notesController = TextEditingController();
+
+  final sugarConcentrationNotifier = ValueNotifier<String>('');
+  // ignore: non_constant_identifier_names
+  // final sugar_concentration = TextEditingController();
+  String sugar_concentration = '';
+  String notes = '';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,11 +66,11 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            TextFieldWidget(
-              maxLine: 1,
-              hintText: 'mmol/L',
-              txtController: sugarConcentrationController,
-            ),
+            // TextFieldWidget(
+            //   maxLine: 1,
+            //   hintText: 'mmol/L',
+            //   txtController: sugarConcentrationController,
+            // ),
             // TextField(
             //   // controller: sugarConcentrationController,
             //   textCapitalization: TextCapitalization.words,
@@ -78,15 +87,23 @@ class AddSugarTaskModel extends ConsumerWidget {
             //     );
             //   },
             // ),
-            // TextFormField(
-            //   controller: sugarConcentrationController,
-            //   textCapitalization: TextCapitalization.words,
-            //   decoration: const InputDecoration(
-            //     enabledBorder: InputBorder.none,
-            //     focusedBorder: InputBorder.none,
-            //     hintText: 'mmol/L',
-            //   ),
-            // ),
+            TextField(
+              // controller: sugar_concentration,
+              textCapitalization: TextCapitalization.words,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: 'mmol/L',
+              ),
+              onChanged: (value) {
+                // // sugarConcentrationNotifier.value = value;
+                sugar_concentration = value;
+                // // sugarConcentrationController.value;
+                // // print("===============X: $value");
+                print("===============XAS: $sugar_concentration");
+                // // print("===============ZXC: $sugarConcentrationController");
+              },
+            ),
             const Gap(10),
             const Text(
               'Notes',
@@ -97,21 +114,21 @@ class AddSugarTaskModel extends ConsumerWidget {
               ),
             ),
             const Gap(10),
-            TextFieldWidget(
-              maxLine: 5,
-              hintText: 'Add Description',
-              txtController: notesController,
-            ),
-            // TextFormField(
-            //   controller: notesController,
-            //   textCapitalization: TextCapitalization.words,
-            //   maxLines: 5,
-            //   decoration: const InputDecoration(
-            //     enabledBorder: InputBorder.none,
-            //     focusedBorder: InputBorder.none,
-            //     hintText: 'Add Description',
-            //   ),
+            // TextFieldWidget(
+            //   maxLine: 5,
+            //   hintText: 'Add Description',
+            //   txtController: notesController,
             // ),
+            TextFormField(
+              // controller: notesController,
+              textCapitalization: TextCapitalization.words,
+              maxLines: 5,
+              decoration: const InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: 'Add Description',
+              ),
+            ),
             const Gap(10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,22 +208,30 @@ class AddSugarTaskModel extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
-                      final sugarConcentrationValue =
-                          sugarConcentrationController.text;
-                      final notesValue = notesController.text;
+                      // final sugarConcentrationValue =
+                      //     sugarConcentrationController.text;
+                      // final notesValue = notesController.text;
                       final dateTaskValue = ref.read(dateProvider);
                       final timeTaskValue = ref.read(timeProvider);
 
                       ref.read(serviceProvider).addTask(TodoModel(
-                            sugarConcentration: sugarConcentrationValue,
-                            notes: notesValue,
+                            sugarConcentration: sugar_concentration,
+                            notes: notes,
                             dateTask: dateTaskValue,
                             timeTask: timeTaskValue,
                           ));
 
                       Navigator.pop(context);
 
+                      //!TEST
+                      // final sugarValue = sugarConcentrationNotifier.value;
+                      // print("A: $sugarValue");
+                      print("B: $sugar_concentration");
+                      // print("C: $sugarConcentrationController");
+
                       print('Data saved');
+                      // print("Sugar Concentration: $sugar_concentration");
+                      // print("Notes: $notes");
                     },
                     child: const Text('Create'),
                   ),
