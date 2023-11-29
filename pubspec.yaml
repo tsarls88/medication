@@ -45,7 +45,7 @@ dependencies:
   gap: ^3.0.1
   flutter_local_notifications:
   riverpod: ^2.4.8
-  flutter_riverpod: ^2.3.6
+  flutter_riverpod:
   firebase_core: ^2.11.0
   cloud_firestore: ^4.6.0
 

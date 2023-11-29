@@ -12,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(ProviderScope(child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -37,10 +37,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: const HomePage(),
-          theme: ThemeData(primarySwatch: Colors.lightBlue),
+        return ProviderScope(
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: const HomePage(),
+            theme: ThemeData(primarySwatch: Colors.lightBlue),
+          ),
         );
       },
     );
